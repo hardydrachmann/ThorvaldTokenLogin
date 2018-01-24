@@ -10,14 +10,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/identity")]
     [Authorize]
     public class IdentityController : Controller
     {
         [HttpGet]
         public IActionResult Get()
         {
-            return new JsonResult(from userSecurityClaim in User.Claims select new {userSecurityClaim.Type, userSecurityClaim.Value});
+            return new JsonResult(from userSecurityClaim in User.Claims select new { userSecurityClaim.Type, userSecurityClaim.Value });
         }
     }
 }

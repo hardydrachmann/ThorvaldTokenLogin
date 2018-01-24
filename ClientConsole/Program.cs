@@ -38,16 +38,12 @@ namespace ClientConsole
             var response = await client.GetAsync("http://localhost:5001/api/identity");
 
             if (!response.IsSuccessStatusCode)
-            {
                 Console.WriteLine("'api' response error: " + response.StatusCode);
-            }
             else
             {
                 var content = await response.Content.ReadAsStringAsync();
                 Console.WriteLine("'api' response success: " + JArray.Parse(content));
             }
         }
-
-        
     }
 }

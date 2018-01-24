@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/identity")]
+    [Route("api/[controller]")]
     [Authorize]
     public class IdentityController : Controller
     {

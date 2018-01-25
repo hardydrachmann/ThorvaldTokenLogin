@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using IdentityServer4.Models;
+using IdentityServer4.Test;
 
 namespace ThorvaldLogin
 {
@@ -22,10 +20,29 @@ namespace ThorvaldLogin
             {
                 new Client
                 {
-                    ClientId = "client",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientId = "AliceClient",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     ClientSecrets = {new Secret("secret".Sha256())},
                     AllowedScopes = {"api"}
+                }
+            };
+        }
+
+        public static List<TestUser> GetUsers()
+        {
+            return new List<TestUser>
+            {
+                new TestUser
+                {
+                    SubjectId = "1",
+                    Username = "Alice",
+                    Password = "alice123"
+                },
+                new TestUser
+                {
+                    SubjectId = "2",
+                    Username = "Bob",
+                    Password = "bob123"
                 }
             };
         }

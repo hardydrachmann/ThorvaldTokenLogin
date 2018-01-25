@@ -21,8 +21,8 @@ namespace ClientConsole
             }
 
             // request token
-            var tokenClient = new TokenClient(discoveryClientResponse.TokenEndpoint, "client", "secret");
-            var tokenResponse = await tokenClient.RequestClientCredentialsAsync("api");
+            var tokenClient = new TokenClient(discoveryClientResponse.TokenEndpoint, "AliceClient", "secret");
+            var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync("Alice", "alice123", "api");
 
             if (tokenResponse.IsError)
             {

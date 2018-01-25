@@ -1,4 +1,4 @@
-﻿@model ThorvaldLogin.Models.LoggedOutViewModel
+﻿@model ThorvaldLogin.Models.Account.LoggedOutViewModel
 
 @{ 
     // set this so the layout rendering sees an anonymous user
@@ -14,8 +14,7 @@
     @if (Model.PostLogoutRedirectUri != null)
     {
         <div>
-            Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to the
-            <span>@Model.ClientName</span> application.
+            Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to the Login page.
         </div>
     }
 

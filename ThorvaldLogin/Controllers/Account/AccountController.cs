@@ -20,6 +20,7 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using ThorvaldLogin.Controllers;
 using ThorvaldLogin.Models;
+using ThorvaldLogin.Models.Account;
 
 namespace ThorvaldLogin.Controllers.Account
 {
@@ -46,7 +47,7 @@ namespace ThorvaldLogin.Controllers.Account
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
-            _users = users ?? new TestUserStore(TestUsers.Users);
+            _users = users ?? new TestUserStore(Config.GetUsers());
 
             _interaction = interaction;
             _clientStore = clientStore;

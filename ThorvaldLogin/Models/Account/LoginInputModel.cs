@@ -4,7 +4,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace ThorvaldLogin.Models
+namespace ThorvaldLogin.Models.Account
 {
     public class LoginInputModel
     {

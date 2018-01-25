@@ -4,7 +4,7 @@
 
 using IdentityServer4.Models;
 
-namespace ThorvaldLogin.Models
+namespace ThorvaldLogin.Models.Home
 {
     public class ErrorViewModel
     {

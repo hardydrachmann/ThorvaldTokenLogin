@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ThorvaldLogin.Controllers;
 
-namespace ThorvaldLogin.Models
+namespace ThorvaldLogin.Models.Account
 {
     public class LoginViewModel : LoginInputModel
     {

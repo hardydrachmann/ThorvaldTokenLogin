@@ -10,4 +10,16 @@
             <dd>@claim.Value</dd>
         }
     </dl>
+
+    <div>
+        @foreach (var claim in User.Claims)
+        {
+            <div>
+                @if (claim.Type == "picture")
+                {
+                    <img src="@claim.Value" />
+                }
+            </div>
+        }
+    </div>
 </div>

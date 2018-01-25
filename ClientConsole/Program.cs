@@ -11,7 +11,7 @@ namespace ClientConsole
         static void Main(string[] args) => MainAsync().GetAwaiter().GetResult();
         private static async Task MainAsync()
         {
-            // discover endpoint
+            // discover endpoint (ThorvaldLogin - IdentityServer4)
             var discoveryClientResponse = await DiscoveryClient.GetAsync("http://localhost:5000");
 
             if (discoveryClientResponse.IsError)
@@ -31,7 +31,7 @@ namespace ClientConsole
             }
             Console.WriteLine("Tokenresponse: " + tokenResponse.Json);
 
-            // call api
+            // call api (Api - IdentityServer4.AccessTokenValidation)
             var client = new HttpClient();
             client.SetBearerToken(tokenResponse.AccessToken);
 

@@ -32,6 +32,8 @@ namespace ThorvaldLogin
             app.UseIdentityServer();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
+
+
         }
     }
 }

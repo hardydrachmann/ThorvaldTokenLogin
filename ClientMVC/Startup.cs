@@ -61,6 +61,8 @@ namespace ClientMVC
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
+
+
         }
     }
 }

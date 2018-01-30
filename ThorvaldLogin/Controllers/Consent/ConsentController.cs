@@ -145,6 +145,7 @@ namespace ThorvaldLogin.Controllers.Consent
             return result;
         }
 
+
         private async Task<ConsentViewModel> BuildViewModelAsync(string returnUrl, ConsentInputModel model = null)
         {
             var request = await _interaction.GetAuthorizationContextAsync(returnUrl);

@@ -5,11 +5,11 @@ VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThorvaldLogin", "ThorvaldLogin\ThorvaldLogin.csproj", "{4D934A5E-ED38-454C-9B9D-31183C87755B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{E8A03812-F5D0-436F-97FE-2FD694BE5310}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientConsole", "ClientConsole\ClientConsole.csproj", "{49E2F62F-FCC0-447B-B300-2998D9D8CD5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientMVC", "ClientMVC\ClientMVC.csproj", "{BB3C139A-B7E9-431B-A6A1-BF5F3D369404}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientMVC", "ClientMVC\ClientMVC.csproj", "{BB3C139A-B7E9-431B-A6A1-BF5F3D369404}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityAPI", "IdentityAPI\IdentityAPI.csproj", "{4B5D0031-9EA4-4338-9934-CBD84FC84F77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,6 @@ Global
 		{4D934A5E-ED38-454C-9B9D-31183C87755B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D934A5E-ED38-454C-9B9D-31183C87755B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D934A5E-ED38-454C-9B9D-31183C87755B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E8A03812-F5D0-436F-97FE-2FD694BE5310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8A03812-F5D0-436F-97FE-2FD694BE5310}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8A03812-F5D0-436F-97FE-2FD694BE5310}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8A03812-F5D0-436F-97FE-2FD694BE5310}.Release|Any CPU.Build.0 = Release|Any CPU
 		{49E2F62F-FCC0-447B-B300-2998D9D8CD5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{49E2F62F-FCC0-447B-B300-2998D9D8CD5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49E2F62F-FCC0-447B-B300-2998D9D8CD5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{BB3C139A-B7E9-431B-A6A1-BF5F3D369404}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB3C139A-B7E9-431B-A6A1-BF5F3D369404}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB3C139A-B7E9-431B-A6A1-BF5F3D369404}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B5D0031-9EA4-4338-9934-CBD84FC84F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B5D0031-9EA4-4338-9934-CBD84FC84F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B5D0031-9EA4-4338-9934-CBD84FC84F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B5D0031-9EA4-4338-9934-CBD84FC84F77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

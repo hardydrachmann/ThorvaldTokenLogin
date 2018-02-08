@@ -31,11 +31,18 @@ namespace IdentityAPI.Controllers
             return userRepo.Get(id);
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Users/{user}
         [HttpPut]
         public User PutUser(User u)
         {
             return userRepo.Update(u);
+        }
+
+        // PUT: api/Users/5
+        [HttpPut]
+        public bool IsDeletedUser(int id)
+        {
+            return userRepo.IsDeleted(id);
         }
 
         // POST: api/Users

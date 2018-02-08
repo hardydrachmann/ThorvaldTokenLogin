@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -7,32 +8,44 @@ namespace IdentityAPI.DAL.Repositories
 {
     public class RoleRepository : IRepository<Role>
     {
+        private IdentityDBEntities db = new IdentityDBEntities();
 
-        IdentityDBEntities _entity = new IdentityDBEntities();
-
-        public Role Create(Role entity)
+        public Role Create(Role r)
         {
-            throw new NotImplementedException();
+            db.Role.Add(r);
+            db.SaveChanges();
+            return r;
         }
 
-        public bool Delete(Role entity)
+        public bool Delete(Role r)
         {
-            throw new NotImplementedException();
+            try
+            {
+                db.Role.Remove(r);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public Role Get(int id)
         {
-            throw new NotImplementedException();
+            return db.Role.Find(id);
         }
 
         public IQueryable<Role> GetAll()
         {
-            throw new NotImplementedException();
+            return db.Role;
         }
 
-        public Role Update(Role entity)
+        public Role Update(Role r)
         {
-            throw new NotImplementedException();
+            db.Entry(r).State = EntityState.Modified;
+            db.SaveChanges();
+            return r;
         }
     }
 }

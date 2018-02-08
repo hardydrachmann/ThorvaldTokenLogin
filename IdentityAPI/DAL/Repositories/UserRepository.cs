@@ -22,6 +22,22 @@ namespace IdentityAPI.DAL.Repositories
             throw new NotImplementedException();
         }
 
+        public bool IsDeleted(int id)
+        {
+            try
+            {
+                User user = db.User.Find(id);
+                user.IsDeleted = !user.IsDeleted;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public User Get(int id)
         {
             return db.User.Find(id);

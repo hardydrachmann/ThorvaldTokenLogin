@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -7,31 +8,44 @@ namespace IdentityAPI.DAL.Repositories
 {
     public class ClientRepository : IRepository<Client>
     {
-        IdentityDBEntities _entity = new IdentityDBEntities();
+        private IdentityDBEntities db = new IdentityDBEntities();
 
-        public Client Create(Client entity)
+        public Client Create(Client c)
         {
-            throw new NotImplementedException();
+            db.Client.Add(c);
+            db.SaveChanges();
+            return c;
         }
 
-        public bool Delete(Client entity)
+        public bool Delete(Client c)
         {
-            throw new NotImplementedException();
+            try
+            {
+                db.Client.Remove(c);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public Client Get(int id)
         {
-            throw new NotImplementedException();
+            return db.Client.Find(id);
         }
 
         public IQueryable<Client> GetAll()
         {
-            throw new NotImplementedException();
+            return db.Client;
         }
 
-        public Client Update(Client entity)
+        public Client Update(Client c)
         {
-            throw new NotImplementedException();
+            db.Entry(c).State = EntityState.Modified;
+            db.SaveChanges();
+            return c;
         }
     }
 }

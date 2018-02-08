@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -7,31 +8,44 @@ namespace IdentityAPI.DAL.Repositories
 {
     public class APIRepository : IRepository<API>
     {
-        IdentityDBEntities _entity = new IdentityDBEntities();
+        private IdentityDBEntities db = new IdentityDBEntities();
 
-        public API Create(API entity)
+        public API Create(API a)
         {
-            throw new NotImplementedException();
+            db.API.Add(a);
+            db.SaveChanges();
+            return a;
         }
 
-        public bool Delete(API entity)
+        public bool Delete(API a)
         {
-            throw new NotImplementedException();
+            try
+            {
+                db.API.Remove(a);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public API Get(int id)
         {
-            throw new NotImplementedException();
+            return db.API.Find(id);
         }
 
         public IQueryable<API> GetAll()
         {
-            throw new NotImplementedException();
+            return db.API;
         }
 
-        public API Update(API entity)
+        public API Update(API a)
         {
-            throw new NotImplementedException();
+            db.Entry(a).State = EntityState.Modified;
+            db.SaveChanges();
+            return a;
         }
     }
 }

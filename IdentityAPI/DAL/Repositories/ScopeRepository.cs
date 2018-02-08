@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -7,31 +8,44 @@ namespace IdentityAPI.DAL.Repositories
 {
     public class ScopeRepository : IRepository<Scope>
     {
-        IdentityDBEntities _entity = new IdentityDBEntities();
+        private IdentityDBEntities db = new IdentityDBEntities();
 
-        public Scope Create(Scope entity)
+        public Scope Create(Scope s)
         {
-            throw new NotImplementedException();
+            db.Scope.Add(s);
+            db.SaveChanges();
+            return s;
         }
 
-        public bool Delete(Scope entity)
+        public bool Delete(Scope s)
         {
-            throw new NotImplementedException();
+            try
+            {
+                db.Scope.Remove(s);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public Scope Get(int id)
         {
-            throw new NotImplementedException();
+            return db.Scope.Find(id);
         }
 
         public IQueryable<Scope> GetAll()
         {
-            throw new NotImplementedException();
+            return db.Scope;
         }
 
-        public Scope Update(Scope entity)
+        public Scope Update(Scope s)
         {
-            throw new NotImplementedException();
+            db.Entry(s).State = EntityState.Modified;
+            db.SaveChanges();
+            return s;
         }
     }
 }

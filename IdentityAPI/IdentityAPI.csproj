@@ -164,12 +164,14 @@
     </Compile>
     <Compile Include="Controllers\APIsController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\ScopesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\Repositories\APIRepository.cs" />
     <Compile Include="DAL\Repositories\ClientRepository.cs" />
+    <Compile Include="DAL\Repositories\LoginRepository.cs" />
     <Compile Include="DAL\Repositories\RoleRepository.cs" />
     <Compile Include="DAL\Repositories\ScopeRepository.cs" />
     <Compile Include="DAL\Repositories\UserRepository.cs" />

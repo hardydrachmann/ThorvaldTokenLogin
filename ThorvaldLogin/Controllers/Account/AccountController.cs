@@ -21,6 +21,11 @@ using IdentityServer4.Models;
 using ThorvaldLogin.Controllers;
 using ThorvaldLogin.Models;
 using ThorvaldLogin.Models.Account;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Cryptography.Xml;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace ThorvaldLogin.Controllers.Account
 {
@@ -37,6 +42,7 @@ namespace ThorvaldLogin.Controllers.Account
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly HttpClient _clientIdentityAPI = new HttpClient();
 
         public AccountController(
             IIdentityServerInteractionService interaction,
@@ -85,7 +91,7 @@ namespace ThorvaldLogin.Controllers.Account
                     // denied the consent (even if this client does not require consent).
                     // this will send back an access denied OIDC error response to the client.
                     await _interaction.GrantConsentAsync(context, ConsentResponse.Denied);
-                    
+
                     // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
                     return Redirect(model.ReturnUrl);
                 }
@@ -98,6 +104,35 @@ namespace ThorvaldLogin.Controllers.Account
 
             if (ModelState.IsValid)
             {
+                string result = getResponseString(model.Username);
+                JObject jsonResult = JObject.Parse(result);
+
+                string dbUsername, dbPassword = "";
+                foreach (var item in jsonResult)
+                {
+                    if (item.Key.Equals("Username"))
+                    {
+                        dbUsername = item.Value.ToString();
+                    }
+                    if (item.Key.Equals("Password"))
+                    {
+                        dbPassword = item.Value.ToString();
+                    }
+                }
+
+                string userCredentials = model.Username + model.Password;
+
+                bool isValidPassword = BCrypt.Net.BCrypt.Verify(userCredentials, dbPassword);
+                bool isValid = false;
+                if (isValidPassword)
+                {
+                    isValid = true;
+                }
+                else
+                {
+                    isValid = false;
+                }
+
                 // validate username/password against in-memory store
                 if (_users.ValidateCredentials(model.Username, model.Password))
                 {
@@ -394,6 +429,22 @@ namespace ThorvaldLogin.Controllers.Account
 
         private void ProcessLoginCallbackForSaml2p(AuthenticateResult externalResult, List<Claim> localClaims, AuthenticationProperties localSignInProps)
         {
+        }
+
+        private string getResponseString(string username)
+        {
+            string paramIdentityAPI = "?username=" + username;
+            _clientIdentityAPI.BaseAddress = new Uri("http://localhost:5001/api/login");
+            _clientIdentityAPI.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpResponseMessage response = _clientIdentityAPI.GetAsync(paramIdentityAPI).Result;
+
+            string finalResult = "";
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                finalResult = result;
+            }
+            return finalResult;
         }
     }
 }

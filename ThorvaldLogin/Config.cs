@@ -50,7 +50,7 @@ namespace ThorvaldLogin
             };
         }
 
-        public static List<TestUser> Get
+        public static List<TestUser> GetUsers
             ()
         {
             return new List<TestUser>

@@ -166,7 +166,7 @@
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\ScopesController.cs" />
-    <Compile Include="Controllers\test.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\Repositories\APIRepository.cs" />
     <Compile Include="DAL\Repositories\ClientRepository.cs" />

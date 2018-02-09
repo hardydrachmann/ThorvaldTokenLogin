@@ -47,7 +47,8 @@ namespace ThorvaldLogin.Controllers.Account
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
-            _users = users ?? new TestUserStore(Config.GetUsers());
+            _users = users ?? new TestUserStore(Config.Get
+                ());
 
             _interaction = interaction;
             _clientStore = clientStore;

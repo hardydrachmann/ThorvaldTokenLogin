@@ -144,6 +144,7 @@
     <edmx:ConceptualModels>
       <Schema Namespace="IdentityDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="IdentityDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="API" EntityType="IdentityDBModel.API" />
           <EntitySet Name="Client" EntityType="IdentityDBModel.Client" />
           <EntitySet Name="Role" EntityType="IdentityDBModel.Role" />
           <EntitySet Name="Scope" EntityType="IdentityDBModel.Scope" />
@@ -156,8 +157,14 @@
             <End Role="Role" EntitySet="Role" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
-          <EntitySet Name="API" EntityType="IdentityDBModel.API" />
         </EntityContainer>
+        <EntityType Name="API">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="Id" />
@@ -208,19 +215,20 @@
           <End Type="IdentityDBModel.Role" Role="Role" Multiplicity="*" />
           <End Type="IdentityDBModel.User" Role="User" Multiplicity="*" />
         </Association>
-        <EntityType Name="API">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="IdentityDBModelStoreContainer" CdmEntityContainer="IdentityDBEntities">
+          <EntitySetMapping Name="API">
+            <EntityTypeMapping TypeName="IdentityDBModel.API">
+              <MappingFragment StoreEntitySet="API">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Client">
             <EntityTypeMapping TypeName="IdentityDBModel.Client">
               <MappingFragment StoreEntitySet="Client">
@@ -279,14 +287,6 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="API">
-            <EntityTypeMapping TypeName="IdentityDBModel.API">
-              <MappingFragment StoreEntitySet="API">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

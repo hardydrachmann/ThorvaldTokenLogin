@@ -25,10 +25,10 @@ namespace IdentityAPI
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<API> API { get; set; }
         public virtual DbSet<Client> Client { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<Scope> Scope { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<API> API { get; set; }
     }
 }

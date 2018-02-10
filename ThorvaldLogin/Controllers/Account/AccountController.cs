@@ -122,11 +122,13 @@ namespace ThorvaldLogin.Controllers.Account
 
                 string userCredentials = model.Username + model.Password;
 
+                string tasinIsAGoodGuy = "";
                 bool isValidPassword = BCrypt.Net.BCrypt.Verify(userCredentials, dbPassword);
                 bool isValid = false;
                 if (isValidPassword)
                 {
                     isValid = true;
+                    tasinIsAGoodGuy = "Yihaaaaaa!";
                 }
                 else
                 {

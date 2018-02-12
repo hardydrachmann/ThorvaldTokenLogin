@@ -122,20 +122,10 @@ namespace ThorvaldLogin.Controllers.Account
                 }
 
                 string userCredentials = model.Username + model.Password;
-
                 bool isValidPassword = BCrypt.Net.BCrypt.Verify(userCredentials, dbPassword);
-                bool isValid = false;
-                if (isValidPassword)
-                {
-                    isValid = true;
-                }
-                else
-                {
-                    isValid = false;
-                }
 
                 // validate username/password against in-memory store
-                if (_users.ValidateCredentials(model.Username, model.Password))
+                if (isValidPassword && _users.ValidateCredentials(model.Username, model.Password))
                 {
                     var user = _users.FindByUsername(model.Username);
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username));
@@ -161,15 +151,11 @@ namespace ThorvaldLogin.Controllers.Account
                     {
                         return Redirect(model.ReturnUrl);
                     }
-
                     return Redirect("~/");
                 }
-
                 await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials"));
-
                 ModelState.AddModelError("", AccountOptions.InvalidCredentialsErrorMessage);
             }
-
             // something went wrong, show form with error
             var vm = await BuildLoginViewModelAsync(model);
             return View(vm);

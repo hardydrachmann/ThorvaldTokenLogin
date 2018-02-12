@@ -104,6 +104,7 @@ namespace ThorvaldLogin.Controllers.Account
 
             if (ModelState.IsValid)
             {
+                // Get a user from the DB by username, and check his username and password using BCrypt.
                 string result = getResponseString(model.Username);
                 JObject jsonResult = JObject.Parse(result);
 
@@ -122,13 +123,11 @@ namespace ThorvaldLogin.Controllers.Account
 
                 string userCredentials = model.Username + model.Password;
 
-                string tasinIsAGoodGuy = "";
                 bool isValidPassword = BCrypt.Net.BCrypt.Verify(userCredentials, dbPassword);
                 bool isValid = false;
                 if (isValidPassword)
                 {
                     isValid = true;
-                    tasinIsAGoodGuy = "Yihaaaaaa!";
                 }
                 else
                 {

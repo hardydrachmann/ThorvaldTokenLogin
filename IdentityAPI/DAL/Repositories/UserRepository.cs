@@ -1,63 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
+using System.Threading.Tasks;
+using IdentityAPI.DAL.Repositories;
+using IdentityAPI.DTOs;
+using IdentityAPI.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityAPI.DAL.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class UserRepository : IRepository<DTOuser>
     {
-        private IdentityDBEntities db = new IdentityDBEntities();
+        IServiceProvider _serviceProvider;
+        DTOconverter DTOconverter = new DTOconverter();
 
-        public User Create(User u)
+        public UserRepository(IServiceProvider serviceProvider)
         {
-            db.User.Add(u);
-            db.SaveChanges();
-            return u;
+            _serviceProvider = serviceProvider;
         }
 
-        public bool Delete(User u)
+        public Task<DTOuser> Create(DTOuser entity)
         {
             throw new NotImplementedException();
         }
 
-        public bool IsDeleted(int id)
+        public Task<DTOuser> Delete(DTOuser entity)
         {
-            try
+            throw new NotImplementedException();
+        }
+
+        public Task<DTOuser> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<DTOuser>> GetAll()
+        {
+            using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
             {
-                User user = db.User.Find(id);
-                user.IsDeleted = !user.IsDeleted;
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-                return true;
+                List<DTOuser> dtoUsers = new List<DTOuser>();
+
+                var users = await context.User.Include(u => u.UserRole).ThenInclude(r => r.Role).ToListAsync();
+
+                foreach (var user in users)
+                {
+                    dtoUsers.Add(DTOconverter.ConvertUser(user));
+                }
+                return dtoUsers;
             }
-            catch
-            {
-                return false;
-            }
         }
 
-        public User Get(int id)
+        public Task<DTOuser> Update(DTOuser entity)
         {
-            return db.User.Find(id);
-        }
-
-        public IQueryable<User> GetAll()
-        {
-            return db.User;
-        }
-
-        public User Update(User u)
-        {
-            db.Entry(u).State = EntityState.Modified;
-            db.SaveChanges();
-            return u;
-        }
-
-        public bool UserExsists(User u)
-        {
-            return db.User.Count(e => e.Id == u.Id) > 0;
+            throw new NotImplementedException();
         }
     }
 }

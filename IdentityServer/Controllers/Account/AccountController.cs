@@ -111,11 +111,11 @@ namespace IdentityServer.Controllers.Account
                 string dbUsername, dbPassword = "";
                 foreach (var item in jsonResult)
                 {
-                    if (item.Key.Equals("Username"))
+                    if (item.Key.Equals("username"))
                     {
                         dbUsername = item.Value.ToString();
                     }
-                    if (item.Key.Equals("Password"))
+                    if (item.Key.Equals("password"))
                     {
                         dbPassword = item.Value.ToString();
                     }
@@ -420,8 +420,8 @@ namespace IdentityServer.Controllers.Account
 
         private string getResponseString(string username)
         {
-            string paramIdentityAPI = "?username=" + username;
-            _clientIdentityAPI.BaseAddress = new Uri("http://localhost:5001/api/login");
+            string paramIdentityAPI = username;
+            _clientIdentityAPI.BaseAddress = new Uri("http://localhost:5001/api/login/");
             _clientIdentityAPI.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             HttpResponseMessage response = _clientIdentityAPI.GetAsync(paramIdentityAPI).Result;
 

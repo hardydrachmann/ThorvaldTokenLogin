@@ -50,8 +50,7 @@ namespace IdentityServer
             };
         }
 
-        public static List<TestUser> GetUsers
-            ()
+        public static List<TestUser> GetUsers()
         {
             return new List<TestUser>
             {

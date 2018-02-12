@@ -1,22 +1,40 @@
-﻿using IdentityAPI.DAL.Repositories;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+using System.Threading.Tasks;
+using IdentityAPI.DAL.Repositories;
+using IdentityAPI.DTOs;
+using IdentityAPI.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityAPI.Controllers
 {
-    public class LoginController : ApiController
+    [Produces("application/json")]
+    [Route("api/Login")]
+    public class LoginController : Controller
     {
-        LoginRepository userRepo = new LoginRepository();
+        IServiceProvider _serviceProvider;
+        LoginRepository loginRepo;
+
+        public LoginController(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+            loginRepo = new LoginRepository(_serviceProvider);
+        }
 
         //GET: api/Login?username=string username
-        [HttpGet]
-        public User GetUserByUsername(string username)
+        [HttpGet("{username}")]
+        public Task<UserValidation> GetUserValidationByUsername(string username)
         {
-            return userRepo.Get(username);
+            return loginRepo.GetUserValidationByUsername(username);
+        }
+
+        //GET: api/Login?id=int id
+        [HttpGet("{id:int}")]
+        public Task<DTOuser> GetUserByUserId(int id)
+        {
+            return loginRepo.GetUserByUserId(id);
         }
     }
 }

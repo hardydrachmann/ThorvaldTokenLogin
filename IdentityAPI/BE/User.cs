@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IdentityAPI.DTOs
+namespace IdentityAPI.BE
 {
-    public class DTOuser
+    public partial class User
     {
+        public User()
+        {
+            UserRole = new HashSet<UserRole>();
+        }
+
         public int Id { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
@@ -16,6 +21,6 @@ namespace IdentityAPI.DTOs
         public string ProfileUri { get; set; }
         public bool IsDeleted { get; set; }
 
-        public List<DTOrole> Roles { get; set; }
+        public ICollection<UserRole> UserRole { get; set; }
     }
 }

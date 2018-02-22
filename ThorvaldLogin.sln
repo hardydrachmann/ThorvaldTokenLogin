@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{00CA4691-B735-4D63-8846-DEBE24AA5667}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityAPI", "IdentityAPI\IdentityAPI.csproj", "{4A62B2F6-4DF7-4410-83D8-812591AD0109}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityAPI", "IdentityAPI\IdentityAPI.csproj", "{4A62B2F6-4DF7-4410-83D8-812591AD0109}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

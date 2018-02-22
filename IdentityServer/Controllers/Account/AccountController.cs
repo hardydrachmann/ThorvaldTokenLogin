@@ -1,11 +1,6 @@
-// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
 using IdentityModel;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
-using IdentityServer4.Test;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,14 +13,8 @@ using Microsoft.AspNetCore.Authentication;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Cryptography.Xml;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using IdentityServer.Models.Account;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
-using System.Diagnostics;
+using IdentityServer.DAL;
 
 namespace IdentityServer.Controllers.Account
 {
@@ -37,24 +26,24 @@ namespace IdentityServer.Controllers.Account
     [SecurityHeaders]
     public class AccountController : Controller
     {
-        private readonly TestUserStore _users;
+        //private readonly TestUserStore _users;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
-        private readonly HttpClient _clientIdentityAPI = new HttpClient();
+        private IUserRepository _userRepository = new UserRepository();
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-            IEventService events,
-            TestUserStore users = null)
+            IEventService events
+            //TestUserStore users = null
+            )
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
-            _users = users ?? new TestUserStore(Config.GetUsers
-                ());
+            //_users = users ?? new TestUserStore(Config.GetTestUsers());
 
             _interaction = interaction;
             _clientStore = clientStore;
@@ -100,36 +89,16 @@ namespace IdentityServer.Controllers.Account
                     // since we don't have a valid context, then we just go back to the home page
                     return Redirect("~/");
                 }
+
             }
 
             if (ModelState.IsValid)
             {
-                // Get a user from the DB by username, and check his username and password using BCrypt.
-                string result = getResponseString(model.Username);
-                JObject jsonResult = JObject.Parse(result);
-
-                string dbUsername, dbPassword = "";
-                foreach (var item in jsonResult)
+                // validate username/password
+                if (_userRepository.ValidateCredentials(model.Username, model.Password))
                 {
-                    if (item.Key.Equals("username"))
-                    {
-                        dbUsername = item.Value.ToString();
-                    }
-                    if (item.Key.Equals("password"))
-                    {
-                        dbPassword = item.Value.ToString();
-                    }
-                }
-
-                string userCredentials = model.Username + model.Password;
-                bool isValidPassword = BCrypt.Net.BCrypt.Verify(userCredentials, dbPassword);
-
-                // validate username/password against in-memory store
-                if (isValidPassword && _users.ValidateCredentials(model.Username, model.Password))
-                {
-                    var user = _users.FindByUsername(model.Username);
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username));
-
+                    var user = _userRepository.FindByUsername(model.Username);
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.Id.ToString(), user.Username));
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.
                     AuthenticationProperties props = null;
@@ -143,7 +112,7 @@ namespace IdentityServer.Controllers.Account
                     };
 
                     // issue authentication cookie with subject ID and username
-                    await HttpContext.SignInAsync(user.SubjectId, user.Username, props);
+                    await HttpContext.SignInAsync(user.Id.ToString(), user.Username, props);
 
                     // make sure the returnUrl is still valid, and if so redirect back to authorize endpoint or a local page
                     // the IsLocalUrl check is only necessary if you want to support additional local pages, otherwise IsValidReturnUrl is more strict
@@ -210,7 +179,6 @@ namespace IdentityServer.Controllers.Account
                 // this triggers a redirect to the external provider for sign-out
                 return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
             }
-
             return View("LoggedOut", vm);
         }
 
@@ -335,7 +303,6 @@ namespace IdentityServer.Controllers.Account
                     }
                 }
             }
-
             return vm;
         }
 
@@ -386,15 +353,15 @@ namespace IdentityServer.Controllers.Account
             }
         }
 
-        private TestUser AutoProvisionUser(string provider, string providerUserId, IEnumerable<Claim> claims)
-        {
-            var user = _users.AutoProvisionUser(provider, providerUserId, claims.ToList());
-            return user;
-        }
+        //private TestUser AutoProvisionUser(string provider, string providerUserId, IEnumerable<Claim> claims)
+        //{
+        //    var user = _users.AutoProvisionUser(provider, providerUserId, claims.ToList());
+        //    return user;
+        //}
 
         private void ProcessLoginCallbackForOidc(AuthenticateResult externalResult, List<Claim> localClaims, AuthenticationProperties localSignInProps)
         {
-            // if the external system sent a session id claim, copy it over
+            // if the external system sent a session Id claim, copy it over
             // so we can use it for single sign-out
             var sid = externalResult.Principal.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.SessionId);
             if (sid != null)
@@ -416,22 +383,6 @@ namespace IdentityServer.Controllers.Account
 
         private void ProcessLoginCallbackForSaml2p(AuthenticateResult externalResult, List<Claim> localClaims, AuthenticationProperties localSignInProps)
         {
-        }
-
-        private string getResponseString(string username)
-        {
-            string paramIdentityAPI = username;
-            _clientIdentityAPI.BaseAddress = new Uri("http://localhost:5001/api/login/");
-            _clientIdentityAPI.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage response = _clientIdentityAPI.GetAsync(paramIdentityAPI).Result;
-
-            string finalResult = "";
-            if (response.IsSuccessStatusCode)
-            {
-                var result = response.Content.ReadAsStringAsync().Result;
-                finalResult = result;
-            }
-            return finalResult;
         }
     }
 }

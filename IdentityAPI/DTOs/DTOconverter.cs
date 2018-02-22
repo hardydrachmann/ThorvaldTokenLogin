@@ -1,8 +1,6 @@
-﻿using IdentityAPI.Models;
-using System;
+﻿using IdentityAPI.BE;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace IdentityAPI.DTOs
 {

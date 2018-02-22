@@ -166,7 +166,7 @@ namespace IdentityServer.Controllers.Consent
                 }
                 else
                 {
-                    _logger.LogError("Invalid client id: {0}", request.ClientId);
+                    _logger.LogError("Invalid client Id: {0}", request.ClientId);
                 }
             }
             else

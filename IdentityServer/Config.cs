@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
-using IdentityModel;
-using IdentityServer4;
 using IdentityServer4.Models;
-using IdentityServer4.Test;
+using static IdentityServer4.IdentityServerConstants;
 
 namespace IdentityServer
 {
@@ -14,6 +11,10 @@ namespace IdentityServer
             return new List<ApiResource>
             {
                 new ApiResource("api", "My API")
+                {
+                    ApiSecrets = { new Secret("secret".Sha256()) }
+                },
+               // add more API resources here if needed.
             };
         }
 
@@ -22,7 +23,7 @@ namespace IdentityServer
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
             };
         }
 
@@ -35,51 +36,23 @@ namespace IdentityServer
                     ClientId = "mvcClient",
                     ClientName = "MVC Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
-
+                    AllowAccessTokensViaBrowser = true,
+                    EnableLocalLogin = true,
+                    RequireConsent = false,
                     // where to re-direct to after login
                     RedirectUris = { "http://localhost:5002/signin-oidc" },
                     // where to re-direct to after logout
                     PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
-
-                    AllowedScopes = new List<string>
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    }
-                }
+                    AllowedScopes = new List<string> {
+                        StandardScopes.OpenId,
+                        StandardScopes.Profile,
+                        "api",
+                    },
+                    AlwaysSendClientClaims = true,
+                    ClientSecrets = new List<Secret>() {new Secret("secret".Sha256()) }
+                },
+                // add more Clients here if needed.
             };
-        }
-
-        public static List<TestUser> GetUsers()
-        {
-            return new List<TestUser>
-            {
-               new TestUser{SubjectId = "818727", Username = "alice", Password = "alice",
-                Claims =
-                {
-                    new Claim(JwtClaimTypes.Name, "Alice Smith"),
-                    new Claim(JwtClaimTypes.GivenName, "Alice"),
-                    new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                    new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
-                    new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServerConstants.ClaimValueTypes.Json),
-                    new Claim(JwtClaimTypes.Picture, "https://memegenerator.net/img/images/250x250/15165993/unikorn.jpg")
-                   }
-            },
-            new TestUser{SubjectId = "88421113", Username = "bob", Password = "bob",
-                Claims =
-                {
-                    new Claim(JwtClaimTypes.Name, "Bob Smith"),
-                    new Claim(JwtClaimTypes.GivenName, "Bob"),
-                    new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                    new Claim(JwtClaimTypes.Email, "BobSmith@email.com"),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-                    new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
-                    new Claim("location", "somewhere")
-                }
-            }};
         }
     }
 }

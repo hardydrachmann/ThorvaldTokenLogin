@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,7 +19,6 @@ namespace Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             // add authentication services (using cookies)
@@ -42,6 +37,13 @@ namespace Client
                     options.RequireHttpsMetadata = false;
                     options.ClientId = "mvcClient";
                     options.SaveTokens = true; // allow saving tokens in cookies
+                    options.ClientSecret = "secret";
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    //options.TokenValidationParameters = new TokenValidationParameters
+                    //{
+                    //    NameClaimType = "name",
+                    //    RoleClaimType = "role",
+                    //};
                 });
         }
 
@@ -57,12 +59,10 @@ namespace Client
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
-
-
         }
     }
 }

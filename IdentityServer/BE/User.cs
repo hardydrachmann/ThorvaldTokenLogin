@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IdentityAPI.DTOs
+namespace IdentityServer.BE
 {
-    public class DTOuser
+    public class User
     {
         public int Id { get; set; }
         public string Firstname { get; set; }
@@ -15,7 +15,6 @@ namespace IdentityAPI.DTOs
         public DateTime BirthDate { get; set; }
         public string ProfileUri { get; set; }
         public bool IsDeleted { get; set; }
-
-        public List<DTOrole> Roles { get; set; }
+        public List<Role> Roles { get; set; }
     }
 }

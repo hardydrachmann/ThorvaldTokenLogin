@@ -1,8 +1,7 @@
-﻿using System;
+﻿using IdentityAPI.BE;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace IdentityAPI.Models
+namespace IdentityAPI.DAL.DAO
 {
     public partial class ThorvaldIdentityDBContext : DbContext
     {

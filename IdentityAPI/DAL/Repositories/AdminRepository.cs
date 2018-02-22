@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using IdentityAPI.DAL.Repositories;
+using IdentityAPI.DAL.DAO;
 using IdentityAPI.DTOs;
-using IdentityAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityAPI.DAL.Repositories
 {
-    public class UserRepository : IRepository<DTOuser>
+    public class AdminRepository : IRepository<DTOuser>
     {
         IServiceProvider _serviceProvider;
-        DTOconverter DTOconverter = new DTOconverter();
+        DTOconverter dtoConverter = new DTOconverter();
 
-        public UserRepository(IServiceProvider serviceProvider)
+        public AdminRepository(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
@@ -45,9 +43,20 @@ namespace IdentityAPI.DAL.Repositories
 
                 foreach (var user in users)
                 {
-                    dtoUsers.Add(DTOconverter.ConvertUser(user));
+                    dtoUsers.Add(dtoConverter.ConvertUser(user));
                 }
                 return dtoUsers;
+            }
+        }
+
+        public async Task<int> UpdatUsername(string username)
+        {
+            using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
+            {
+                var result = await context.User.SingleOrDefaultAsync(u => u.Username == username);
+                result.Username = "UPDATED ALICE";
+                int statusCode = await context.SaveChangesAsync();
+                return statusCode;
             }
         }
 

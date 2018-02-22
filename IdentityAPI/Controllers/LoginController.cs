@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using IdentityAPI.DAL.Repositories;
 using IdentityAPI.DTOs;
-using IdentityAPI.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityAPI.Controllers
@@ -35,6 +32,13 @@ namespace IdentityAPI.Controllers
         public Task<DTOuser> GetUserByUserId(int id)
         {
             return loginRepo.GetUserByUserId(id);
+        }
+
+        //GET: api/Login
+        [HttpGet]
+        public Task<List<DTOuser>> GetAllUsers()
+        {
+            return loginRepo.GetAllUsers();
         }
     }
 }

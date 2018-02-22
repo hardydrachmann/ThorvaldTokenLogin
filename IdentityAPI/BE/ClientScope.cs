@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace IdentityAPI.Models
+﻿namespace IdentityAPI.BE
 {
     public partial class ClientScope
     {

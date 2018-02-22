@@ -1,10 +1,9 @@
-﻿using IdentityAPI.DTOs;
-using IdentityAPI.Models;
+﻿using IdentityAPI.DAL.DAO;
+using IdentityAPI.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace IdentityAPI.DAL.Repositories
@@ -24,9 +23,7 @@ namespace IdentityAPI.DAL.Repositories
             using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
             {
                 UserValidation userValidation = new UserValidation();
-
                 var user = await context.User.SingleOrDefaultAsync(u => u.Username == username);
-
                 userValidation.Id = user.Id;
                 userValidation.Username = user.Username;
                 userValidation.Password = user.Password;
@@ -38,11 +35,22 @@ namespace IdentityAPI.DAL.Repositories
         {
             using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
             {
-                DTOuser dtoUser = new DTOuser();
-
                 var user = await context.User.Include(u => u.UserRole).ThenInclude(r => r.Role).FirstOrDefaultAsync(u => u.Id == id);
-
                 return dtoConverter.ConvertUser(user);
+            }
+        }
+
+        public async Task<List<DTOuser>> GetAllUsers()
+        {
+            List<DTOuser> userList = new List<DTOuser>();
+            using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
+            {
+                var users = await context.User.Include(u => u.UserRole).ThenInclude(r => r.Role).ToListAsync();
+                foreach (var user in users)
+                {
+                    userList.Add(dtoConverter.ConvertUser(user));
+                }
+                return userList;
             }
         }
     }

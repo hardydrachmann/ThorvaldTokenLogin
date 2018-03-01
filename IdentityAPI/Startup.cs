@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace IdentityAPI
 {
@@ -20,19 +21,19 @@ namespace IdentityAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ThorvaldIdentityDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             services.AddMvcCore()
             .AddAuthorization()
             .AddJsonFormatters();
-
             services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
-                {
-                    options.Authority = "http://localhost:5000";
-                    options.RequireHttpsMetadata = false;
-
-                    options.ApiName = "api";
-                });
+            .AddIdentityServerAuthentication(options =>
+            {
+                options.Authority = "http://localhost:5000";
+                options.RequireHttpsMetadata = false;
+                options.ApiName = "api";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

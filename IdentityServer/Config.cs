@@ -12,7 +12,7 @@ namespace IdentityServer
             {
                 new ApiResource("api", "My API")
                 {
-                    ApiSecrets = { new Secret("secret".Sha256()) }
+                    ApiSecrets = { new Secret("$2y$10$g.rNgAOXbwWWHN3.cKqWqeVmrozhctBnhVtsuMmbrQTySrrMucUXi") },
                 },
                // add more API resources here if needed.
             };
@@ -35,21 +35,21 @@ namespace IdentityServer
                 {
                     ClientId = "mvcClient",
                     ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-                    EnableLocalLogin = true,
-                    RequireConsent = false,
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    // secret for authentication
+                    ClientSecrets = {new Secret("$2y$10$g.rNgAOXbwWWHN3.cKqWqeVmrozhctBnhVtsuMmbrQTySrrMucUXi".Sha256()) },
                     // where to re-direct to after login
                     RedirectUris = { "http://localhost:5002/signin-oidc" },
                     // where to re-direct to after logout
                     PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
-                    AllowedScopes = new List<string> {
-                        StandardScopes.OpenId,
-                        StandardScopes.Profile,
-                        "api",
-                    },
+                    // scopes that client has access to
+                    AllowedScopes = {StandardScopes.OpenId, StandardScopes.Profile, "api" },
+                    AllowOfflineAccess = true,
+                    AllowAccessTokensViaBrowser = true,
+                    EnableLocalLogin = true,
+                    RequireConsent = false,
                     AlwaysSendClientClaims = true,
-                    ClientSecrets = new List<Secret>() {new Secret("secret".Sha256()) }
                 },
                 // add more Clients here if needed.
             };

@@ -53,8 +53,9 @@ namespace IdentityAPI.DAL.Repositories
         {
             using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
             {
-                var result = await context.User.SingleOrDefaultAsync(u => u.Username == username);
-                result.Username = "UPDATED ALICE";
+                string newUsername = "FUCK!!!";
+                var result = await context.User.SingleOrDefaultAsync(u => u.Username == "hd");
+                result.Username = newUsername;
                 int statusCode = await context.SaveChangesAsync();
                 return statusCode;
             }

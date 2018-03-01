@@ -21,12 +21,10 @@ namespace IdentityServer
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<ProfileService>()
-                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>()
                 .AddDeveloperSigningCredential(persistKey: false)
                 .Services.AddSingleton<IUserRepository, UserRepository>();
 
-            //Inject the classes
-            services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
+            //Inject the Profile service class
             services.AddTransient<IProfileService, ProfileService>();
         }
 

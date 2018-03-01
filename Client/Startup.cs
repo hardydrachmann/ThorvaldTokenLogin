@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Client
 {
@@ -33,17 +34,22 @@ namespace Client
                 .AddOpenIdConnect("oidc", options =>
                 {
                     options.SignInScheme = "Cookies";
+
                     options.Authority = "http://localhost:5000"; // trust identity server (port 5000 = our server)
                     options.RequireHttpsMetadata = false;
+
                     options.ClientId = "mvcClient";
+                    options.ClientSecret = "$2y$10$g.rNgAOXbwWWHN3.cKqWqeVmrozhctBnhVtsuMmbrQTySrrMucUXi";
+                    options.ResponseType = "code id_token";
+
+
                     options.SaveTokens = true; // allow saving tokens in cookies
-                    options.ClientSecret = "secret";
                     options.GetClaimsFromUserInfoEndpoint = true;
-                    //options.TokenValidationParameters = new TokenValidationParameters
-                    //{
-                    //    NameClaimType = "name",
-                    //    RoleClaimType = "role",
-                    //};
+
+                    options.Scope.Add("api");
+                    options.Scope.Add("offline_access");
+
+                    options.TokenValidationParameters = new TokenValidationParameters { NameClaimType = "name", RoleClaimType = "role" };
                 });
         }
 
@@ -59,7 +65,6 @@ namespace Client
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();

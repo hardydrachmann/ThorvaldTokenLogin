@@ -1,5 +1,15 @@
 ﻿@{ ViewData["Title"] = "Home Page"; }
 
+
+@using Microsoft.AspNetCore.Authentication;
+
+
+<dt>access token</dt>
+<dd>@await ViewContext.HttpContext.GetTokenAsync("access_token")</dd>
+
+<dt>refresh token</dt>
+<dd>@await ViewContext.HttpContext.GetTokenAsync("refresh_token")</dd>
+
 <div>
     <dl>
         @foreach (var claim in User.Claims)
@@ -19,13 +29,5 @@
                 }
             </div>
         }
-    </div>
-    <div>
-        <button type="button" onclick="location.href='@Url.Action("ShowToken", "Home")'">Show tokens metadata</button>
-        @model string
-        <p>@Model</p>
-    </div>
-    <div>
-        <button type="button" onclick="location.href='@Url.Action("Edit", "Admin")'">Updated username</button>       
     </div>
 </div>

@@ -1,9 +1,13 @@
-﻿using IdentityServer.DAL;
+﻿using IdentityModel;
+using IdentityServer.BE;
+using IdentityServer.DAL;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace IdentityServer.Controllers
@@ -33,8 +37,7 @@ namespace IdentityServer.Controllers
                     if (user != null)
                     {
                         //set issued claims to return
-                        context.IssuedClaims = ResourceOwnerPasswordValidator
-                            .GetUserClaims(user).ToList();
+                        context.IssuedClaims = GetUserClaims(user).ToList();
                     }
                 }
             }
@@ -45,7 +48,30 @@ namespace IdentityServer.Controllers
         public async Task IsActiveAsync(IsActiveContext context)
         {
             var user = _userRepository.FindByUsername(context.Subject.Identity.Name);
-            context.IsActive = user != null;
+            if (user != null)
+            {
+                context.IsActive = !user.IsDeleted;
+            }
+        }
+
+        //build claims array from user data
+        public static Claim[] GetUserClaims(User user)
+        {
+            List<Claim> claimList = new List<Claim>();
+
+            claimList.Add(new Claim("user_id", user.Id.ToString()));
+            claimList.Add(new Claim(JwtClaimTypes.Name, user.Firstname + " " + user.Lastname));
+            claimList.Add(new Claim(JwtClaimTypes.GivenName, user.Firstname));
+            claimList.Add(new Claim(JwtClaimTypes.FamilyName, user.Lastname));
+            claimList.Add(new Claim(JwtClaimTypes.Email, user.Email));
+            claimList.Add(new Claim(JwtClaimTypes.PreferredUserName, user.Username));
+
+            //roles       
+            foreach (var role in user.Roles)
+            {
+                claimList.Add(new Claim(JwtClaimTypes.Role, role.Name));
+            }
+            return claimList.ToArray();
         }
     }
 }

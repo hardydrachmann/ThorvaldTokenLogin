@@ -50,6 +50,17 @@ namespace IdentityServer
                     EnableLocalLogin = true,
                     RequireConsent = false,
                     AlwaysSendClientClaims = true,
+
+
+                    // TOKEN EXPIRATION SETTINGS:
+                    AccessTokenLifetime = 3600,
+                    AccessTokenType = AccessTokenType.Jwt,
+                    AbsoluteRefreshTokenLifetime = 3600,
+                    RefreshTokenExpiration = TokenExpiration.Absolute,
+                    IdentityTokenLifetime = 3600,
+                    SlidingRefreshTokenLifetime = 3600,
+                    RefreshTokenUsage = TokenUsage.OneTimeOnly, // use reUse
+                    UpdateAccessTokenClaimsOnRefresh = true,
                 },
                 // add more Clients here if needed.
             };

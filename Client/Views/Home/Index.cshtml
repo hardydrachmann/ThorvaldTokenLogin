@@ -1,8 +1,26 @@
-﻿@{ ViewData["Title"] = "Home Page"; }
+﻿@using Microsoft.AspNetCore.Authentication;
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+@{ ViewData["Title"] = "Home Page"; }
 
 
-@using Microsoft.AspNetCore.Authentication;
 
+
+<div>
+    Token expires at:
+    <button id="btnTokenExpiresAt">Show</button>
+    <label id="lblTokenExpiresAt"></label>
+    <script>
+    $(document).ready(function () {
+        $("#btnTokenExpiresAt").click(function () { 
+           $("#lblTokenExpiresAt").text("@await ViewContext.HttpContext.GetTokenAsync("expires_at")");
+        })
+    })
+    </script>
+</div>
+
+<dt>identity token</dt>
+<dd>@await ViewContext.HttpContext.GetTokenAsync("id_token")</dd>
 
 <dt>access token</dt>
 <dd>@await ViewContext.HttpContext.GetTokenAsync("access_token")</dd>

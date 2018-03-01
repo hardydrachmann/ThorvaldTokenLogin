@@ -26,6 +26,13 @@ namespace Client.Controllers
             return View();
         }
 
+        [Authorize]
+        public IActionResult Test()
+        {
+
+            return View();
+        }
+
         public async Task Logout()
         {
             await HttpContext.SignOutAsync("Cookies");

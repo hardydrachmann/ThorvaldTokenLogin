@@ -29,6 +29,7 @@ namespace IdentityServer
                 .AddSigningCredential(new X509Certificate2(Path.Combine(@".\Certificate\IdentityServer4Auth.pfx"),"Thorvald"))
                 .Services.AddSingleton<IUserRepository, UserRepository>();
 
+
             //Inject the Profile service class
             services.AddTransient<IProfileService, ProfileService>();
         }

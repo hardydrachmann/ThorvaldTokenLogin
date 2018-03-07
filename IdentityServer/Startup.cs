@@ -4,7 +4,11 @@ using IdentityServer4.Services;
 using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 
 namespace IdentityServer
 {
@@ -21,7 +25,8 @@ namespace IdentityServer
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<ProfileService>()
-                .AddDeveloperSigningCredential(persistKey: false)
+                /*.AddDeveloperSigningCredential(persistKey: false)*/
+                .AddSigningCredential(new X509Certificate2(Path.Combine(@".\Certificate\IdentityServer4Auth.pfx"),"Thorvald"))
                 .Services.AddSingleton<IUserRepository, UserRepository>();
 
             //Inject the Profile service class

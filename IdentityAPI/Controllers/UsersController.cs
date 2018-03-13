@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using IdentityAPI.DAL.Repositories;
 using IdentityAPI.DTOs;
@@ -43,7 +44,7 @@ namespace IdentityAPI.Controllers
         }
 
         [HttpPost]
-        public Task<int> Create(DTOuser user)
+        public Task<int> Create([FromBody]DTOuser user)
         {
             return userRepo.Create(user);
         }

@@ -20,13 +20,13 @@ namespace IdentityAPI.DAL.Repositories
             dtoConverter = new DTOconverter();
         }
 
-        public Task<int> Create(DTOuser entity)
+        public async Task<int> Create(DTOuser entity)
         {
             using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
             {
                 var user = dtoConverter.ConvertDTO(entity);
                 context.User.Add(user);
-                return context.SaveChangesAsync();
+                return await context.SaveChangesAsync();
             }
         }
 

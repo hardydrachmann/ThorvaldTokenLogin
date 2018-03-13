@@ -18,12 +18,12 @@ namespace IdentityAPI.DAL.Repositories
             _serviceProvider = serviceProvider;
         }
 
-        public Task<DTOuser> Create(DTOuser entity)
+        public Task<int> Create(DTOuser entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<DTOuser> Delete(DTOuser entity)
+        public Task<int> Delete(DTOuser entity)
         {
             throw new NotImplementedException();
         }
@@ -61,7 +61,7 @@ namespace IdentityAPI.DAL.Repositories
             }
         }
 
-        public Task<DTOuser> Update(DTOuser entity)
+        public Task<int> Update(DTOuser entity)
         {
             throw new NotImplementedException();
         }

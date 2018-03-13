@@ -25,11 +25,11 @@ namespace IdentityServer
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<ProfileService>()
-              
+
 
                // CERTIFICATES:
-               /*.AddDeveloperSigningCredential(persistKey: false)*/
-              .AddSigningCredential(new X509Certificate2(Path.Combine(@"C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x64\IdentityServer4Auth.pfx"),"Thorvald"))
+               .AddDeveloperSigningCredential(persistKey: false)
+              //.AddSigningCredential(new X509Certificate2(Path.Combine(@"C:\Program Files (x86)\Windows Kits\10\bin\10.0.16299.0\x64\IdentityServer4Auth.pfx"),"Thorvald"))
                //.AddSigningCredential(new X509Certificate2(Path.Combine(@".\Certificates\Hardy\IdentityServer4Auth.pfx"), "Thorvald"))
                 
 

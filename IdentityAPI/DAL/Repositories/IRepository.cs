@@ -9,10 +9,10 @@ namespace IdentityAPI.DAL.Repositories
 
         Task<T> Get(int id);
 
-        Task<T> Create(T entity);
+        Task<int> Create(T entity);
 
-        Task<T> Update(T entity);
+        Task<int> Update(T entity);
 
-        Task<T> Delete(T entity);
+        Task<int> Delete(T entity);
     }
 }

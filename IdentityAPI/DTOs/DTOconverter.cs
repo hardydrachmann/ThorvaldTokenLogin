@@ -36,5 +36,35 @@ namespace IdentityAPI.DTOs
             };
             return dtoUser;
         }
+
+        public User ConvertDTO(DTOuser user)
+        {
+            List<UserRole> dtoRoles = new List<UserRole>();
+            if(user.Roles != null) { 
+            foreach (var r in user.Roles)
+            {
+                UserRole dtoRole = new UserRole
+                {
+                    UserId = user.Id,
+                    RoleId = r.Id
+                };
+                dtoRoles.Add(dtoRole);
+            }
+            }
+            User dtoUser = new User
+            {
+                Id = user.Id,
+                Firstname = user.Firstname,
+                Lastname = user.Lastname,
+                Username = user.Username,
+                Password = user.Password,
+                Email = user.Email,
+                ProfileUri = user.ProfileUri,
+                IsDeleted = user.IsDeleted,
+                UserRole = dtoRoles
+            };
+
+            return dtoUser;
+        }
     }
 }

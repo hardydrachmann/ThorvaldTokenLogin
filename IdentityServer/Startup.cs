@@ -25,12 +25,12 @@ namespace IdentityServer
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<ProfileService>()
-                /*.AddDeveloperSigningCredential(persistKey: false)*/
-                .AddSigningCredential(new X509Certificate2(Path.Combine(@".\Certificate\IdentityServer4Auth.pfx"),"Thorvald"))
-                .Services.AddSingleton<IUserRepository, UserRepository>();
+
+            // CERTIFICATES:
+            /*.AddDeveloperSigningCredential(persistKey: false)*/   
+            .AddSigningCredential(new X509Certificate2(Path.Combine(@"C:\Program Files (x86)\Windows Kits\Certificate\IdentityServer4Auth.pfx"), "Thorvald"))
             
-            //Inject the Profile service class
-            services.AddTransient<IProfileService, ProfileService>();
+            .Services.AddSingleton<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -48,7 +48,10 @@ namespace IdentityAPI.DAL.Repositories
                 var users = await context.User.Include(u => u.UserRole).ThenInclude(r => r.Role).ToListAsync();
                 foreach (var user in users)
                 {
-                    userList.Add(dtoConverter.ConvertUser(user));
+                    if (!user.IsDeleted)
+                    {
+                        userList.Add(dtoConverter.ConvertUser(user));
+                    }
                 }
                 return userList;
             }

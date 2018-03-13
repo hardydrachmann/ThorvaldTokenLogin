@@ -51,7 +51,8 @@ namespace IdentityAPI.Controllers
         [HttpDelete]
         public Task<int> Delete(DTOuser user)
         {
-            return userRepo.Delete(user);
+            user.IsDeleted = true;
+            return userRepo.Update(user);
         }
     }
 }

@@ -24,13 +24,13 @@ namespace IdentityAPI.DAL.Repositories
         {
             using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
             {
-                var user = dtoConverter.ConvertDTO(entity);
+                var user = dtoConverter.ConvertDTOUser(entity);
                 context.User.Add(user);
                 return context.SaveChangesAsync();
             }
         }
 
-        public async Task<int> Delete(DTOuser entity)
+        public async Task<int> Delete(int id)
         {
             //using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
             //{
@@ -70,7 +70,7 @@ namespace IdentityAPI.DAL.Repositories
         {
             using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
             {
-                context.Update(dtoConverter.ConvertDTO(entity));
+                context.Update(dtoConverter.ConvertDTOUser(entity));
 
                 return await context.SaveChangesAsync();
             }

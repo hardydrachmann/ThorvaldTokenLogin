@@ -13,6 +13,6 @@ namespace IdentityAPI.DAL.Repositories
 
         Task<int> Update(T entity);
 
-        Task<int> Delete(T entity);
+        Task<int> Delete(int id);
     }
 }

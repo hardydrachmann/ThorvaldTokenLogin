@@ -37,34 +37,55 @@ namespace IdentityAPI.DTOs
             return dtoUser;
         }
 
-        public User ConvertDTO(DTOuser user)
+        public User ConvertDTOUser(DTOuser dtoUser)
         {
             List<UserRole> dtoRoles = new List<UserRole>();
-            if(user.Roles != null) { 
-            foreach (var r in user.Roles)
+            if (dtoUser.Roles != null)
             {
-                UserRole dtoRole = new UserRole
+                foreach (var r in dtoUser.Roles)
                 {
-                    UserId = user.Id,
-                    RoleId = r.Id
-                };
-                dtoRoles.Add(dtoRole);
+                    UserRole dtoRole = new UserRole
+                    {
+                        UserId = dtoUser.Id,
+                        RoleId = r.Id
+                    };
+                    dtoRoles.Add(dtoRole);
+                }
             }
-            }
-            User dtoUser = new User
+            User user = new User
             {
-                Id = user.Id,
-                Firstname = user.Firstname,
-                Lastname = user.Lastname,
-                Username = user.Username,
-                Password = user.Password,
-                Email = user.Email,
-                ProfileUri = user.ProfileUri,
-                IsDeleted = user.IsDeleted,
+                Id = dtoUser.Id,
+                Firstname = dtoUser.Firstname,
+                Lastname = dtoUser.Lastname,
+                Username = dtoUser.Username,
+                Password = dtoUser.Password,
+                Email = dtoUser.Email,
+                ProfileUri = dtoUser.ProfileUri,
+                IsDeleted = dtoUser.IsDeleted,
                 UserRole = dtoRoles
             };
 
-            return dtoUser;
+            return user;
+        }
+
+        public DTOrole ConvertRole(Role role)
+        {
+            DTOrole dtoRole = new DTOrole
+            {
+                Id = role.Id,
+                Name = role.Name
+            };
+            return dtoRole;
+        }
+
+        public Role ConvertDTORole(DTOrole DtoRole)
+        {
+            Role role = new Role
+            {
+                Id = DtoRole.Id,
+                Name = DtoRole.Name
+            };
+            return role;
         }
     }
 }

@@ -23,7 +23,7 @@ namespace IdentityAPI.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<int> Delete(DTOuser entity)
+        public Task<int> Delete(int id)
         {
             throw new NotImplementedException();
         }

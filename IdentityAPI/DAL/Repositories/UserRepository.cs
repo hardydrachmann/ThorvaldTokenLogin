@@ -32,11 +32,12 @@ namespace IdentityAPI.DAL.Repositories
 
         public async Task<int> Delete(DTOuser entity)
         {
-            using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
-            {
-                context.User.Remove(dtoConverter.ConvertDTO(entity));
-                return await context.SaveChangesAsync();
-            }
+            //using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
+            //{
+            //    context.User.Remove(dtoConverter.ConvertDTO(entity));
+            //    return await context.SaveChangesAsync();
+            //}
+            throw new NotImplementedException();
         }
 
         public async Task<DTOuser> Get(int id)

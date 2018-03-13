@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Client.BE;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 using Newtonsoft.Json;
+using Client.BE;
 
 namespace Client.Controllers
 {

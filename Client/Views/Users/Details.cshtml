@@ -64,6 +64,19 @@
         <dd>
             @Html.DisplayFor(model => model.IsDeleted)
         </dd>
+
+        <dt>
+            Role(s)
+        </dt>
+
+        <dd>
+            @foreach (var item in Model.Roles)
+            {
+                @Html.DisplayFor(model => item.Name)
+                <br />
+            }
+        </dd>
+
     </dl>
 </div>
 <div>

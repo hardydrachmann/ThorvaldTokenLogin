@@ -2,23 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using IdentityAPI.DAL.Repositories;
 using IdentityAPI.DTOs;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityAPI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [Produces("application/json")]
-    [Route("api/User")]
-    public class UserController : Controller
+    [Route("api/Users")]
+    public class UsersController : Controller
     {
         IServiceProvider _serviceProvider;
         UserRepository userRepo;
 
-        public UserController(IServiceProvider serviceProvider)
+        public UsersController(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             userRepo = new UserRepository(_serviceProvider);

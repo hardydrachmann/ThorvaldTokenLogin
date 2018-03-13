@@ -12,29 +12,34 @@ namespace Client.Controllers
         // GET: Users
         public IActionResult Index()
         {
+            string path = "user";
             List<User> userList = new List<User>();
-            userList = JsonConvert.DeserializeObject<List<User>>(getAllUsers().Result);
+            userList = JsonConvert.DeserializeObject<List<User>>(CallAPi(path).Result);
 
             return View(userList);
         }
 
-        // GET: Users/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //GET: Users/Details/5
+        public IActionResult Details(int? id)
+        {
+            User user = new User();
 
-        //    var user = await _context.User
-        //        .SingleOrDefaultAsync(m => m.Id == id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (id == null)
+            {
+                
+                return NotFound();
+            }
 
-        //    return View(user);
-        //}
+            string path = "User/" + id;
+
+            user = JsonConvert.DeserializeObject<User>(CallAPi(path).Result);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
 
         //// GET: Users/Create
         //public IActionResult Create()
@@ -143,11 +148,11 @@ namespace Client.Controllers
         //    return _context.User.Any(e => e.Id == id);
         //}
 
-        private async Task<string> getAllUsers()
+        private async Task<string> CallAPi(string path)
         {
             using (var client = new HttpClient())
             {
-                var response = await client.GetStringAsync("http://localhost:5001/api/login/");
+                var response = await client.GetStringAsync("http://localhost:5001/api/"+ path);
                 return response;
             }
         }

@@ -22,7 +22,6 @@ namespace Client.Controllers
                 SetAccessToken();
             }
 
-            string path = "users";
             List<User> userList = new List<User>();
 
             var response = client.GetStringAsync("http://localhost:5001/api/users/");

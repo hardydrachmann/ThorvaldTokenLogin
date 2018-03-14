@@ -6,11 +6,12 @@ namespace IdentityServer
 {
     public class Config
     {
+        //Returns the ApiResources, teaching the IdentityServer about the API's associated with it.
         public static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource>
             {
-                new ApiResource("api", "My API")
+                new ApiResource("api", "My API") //"Api-Id" and "easy to read" name of the Api used for easy recognition.
                 {
                     ApiSecrets = { new Secret("$2y$10$g.rNgAOXbwWWHN3.cKqWqeVmrozhctBnhVtsuMmbrQTySrrMucUXi") },
                 },
@@ -18,6 +19,7 @@ namespace IdentityServer
             };
         }
 
+        //Returns IdentityResources, used to teach the IdentityServer about the UserResources available.
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
             return new List<IdentityResource>
@@ -27,15 +29,16 @@ namespace IdentityServer
             };
         }
 
+        //Returns the clients, used to configure all the client and teach the IdentityServer about client permissions.
         public static IEnumerable<Client> GetClients()
         {
             return new List<Client>
             {
                 new Client
                 {
-                    ClientId = "mvcClient",
-                    ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                    ClientId = "mvcClient", 
+                    ClientName = "MVC Client", //Human readable name
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials, //Specifies the grant types used to generate our Id-token and Access Token
                     AlwaysIncludeUserClaimsInIdToken = true,
                     // secret for authentication
                     ClientSecrets = {new Secret("$2y$10$g.rNgAOXbwWWHN3.cKqWqeVmrozhctBnhVtsuMmbrQTySrrMucUXi".Sha256()) },
@@ -52,15 +55,17 @@ namespace IdentityServer
                     AlwaysSendClientClaims = true,
 
 
-                    // TOKEN EXPIRATION SETTINGS:
-                    AccessTokenLifetime = 3600,
-                    AccessTokenType = AccessTokenType.Jwt,
-                    AbsoluteRefreshTokenLifetime = 3600,
-                    RefreshTokenExpiration = TokenExpiration.Absolute,
-                    IdentityTokenLifetime = 3600,
-                    SlidingRefreshTokenLifetime = 3600,
-                    RefreshTokenUsage = TokenUsage.OneTimeOnly, // use reUse
-                    UpdateAccessTokenClaimsOnRefresh = true,
+                    //All Token configuration settings, edit this if your token has special needs.
+                    //// TOKEN EXPIRATION SETTINGS:
+                    //AccessTokenLifetime = 3600,
+                    //AccessTokenType = AccessTokenType.Jwt,
+
+                    //AbsoluteRefreshTokenLifetime = 3600,
+                    //RefreshTokenExpiration = TokenExpiration.Absolute,
+                    //IdentityTokenLifetime = 3600,
+                    //SlidingRefreshTokenLifetime = 3600,
+                    //RefreshTokenUsage = TokenUsage.OneTimeOnly, // use reUse
+                    //UpdateAccessTokenClaimsOnRefresh = true,
                 },
                 // add more Clients here if needed.
             };

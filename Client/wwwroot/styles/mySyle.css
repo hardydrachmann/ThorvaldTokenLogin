@@ -14,8 +14,14 @@
             }
 }
 
-.backgroundColor {
-    background-color: black;
+html, body {
+    margin-right: -4px !important; /*COMPENSATES THE VERTICAL SCROLLBAR*/
+    overflow-x: scroll !important; /*REMOVES HORIZONTAL SCROLLBAR THE ABOVE CREATES*/
+    margin-top: 0px !important; /*COMPENSATES THE HORIZONTAL SCROLLBAR*/
+}
+
+.bgColor {
+    background-color: white;
 }
 
 .tableHeaderBG {
@@ -26,12 +32,13 @@
 .btnPadding {
     padding-bottom: 10px;
 }
-.btnAdd{
-    font-size:16px;
+
+.btnAdd {
+    font-size: 16px;
 }
 
-.alignButtons{
-    text-align:right;
+.alignButtons {
+    text-align: right;
 }
 
 
@@ -44,16 +51,15 @@
     border: none;
     text-decoration: none;
     font-size: 32px;
-    background-color:darkslategrey;
-    color:white;
-    border-radius:12px;
+    background-color: darkslategrey;
+    color: white;
+    border-radius: 12px;
 }
 
 #container1 {
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     margin-bottom: 5%;
     margin-top: 5%;
     text-align: center;
 }
-

@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Client.Models;
 
 namespace Client.Controllers
 {
@@ -82,6 +83,9 @@ namespace Client.Controllers
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
+            UserViewModel uvm = new UserViewModel();
+            List<Role> roleList = new List<Role>();
             setAccessToken();
 
             if (id == null)
@@ -90,12 +94,18 @@ namespace Client.Controllers
             }
 
             User user = getUserById(id);
+            var response = client.GetStringAsync("http://localhost:5001/api/Roles/");
+            roleList = JsonConvert.DeserializeObject<List<Role>>(response.Result);
 
             if (user == null)
             {
                 return NotFound();
             }
-            return View(user);
+
+            uvm.User = user;
+            uvm.Roles = roleList;
+
+            return View(uvm);
         }
 
         // PUT: Users/Edit/5

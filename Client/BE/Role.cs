@@ -8,5 +8,7 @@ namespace Client.BE
 
         [Required]
         public string Name { get; set; }
+
+        public bool isChecked { get; set; }
     }
 }

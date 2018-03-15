@@ -22,6 +22,7 @@ namespace Client.BE
         [Required]
         [Display(Name = "Email Address")]
         [MinLength(8)]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
@@ -33,6 +34,7 @@ namespace Client.BE
         public string Password { get; set; }
 
         [Display(Name = "Profile URL")]
+        [Url]
         public string ProfileUri { get; set; }
 
         [Display(Name ="Unauthorized?")]

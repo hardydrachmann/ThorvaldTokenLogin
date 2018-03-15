@@ -59,7 +59,7 @@ namespace Client.Controllers
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Firstname,Lastname,Email,Username,Password,IsLocal,BirthDate,ProfileUri,IsDeleted")] User user)
+        public async Task<IActionResult> Create([Bind("Id,Firstname,Lastname,Email,Username,Password,ProfileUri,IsDeleted")] User user)
         {
             setAccessToken();
 
@@ -90,9 +90,6 @@ namespace Client.Controllers
             }
 
             User user = getUserById(id);
-            //string dateString = user.BirthDate.ToString("yyyy-MM-dd");
-            //user.BirthDate = DateTime.Parse(dateString);
-
 
             if (user == null)
             {
@@ -104,7 +101,7 @@ namespace Client.Controllers
         // PUT: Users/Edit/5
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditConfirmed(int id, [Bind("Id,Firstname,Lastname,Email,Username,Password,IsLocal,BirthDate,ProfileUri,IsDeleted")] User user)
+        public async Task<IActionResult> EditConfirmed(int id, [Bind("Id,Firstname,Lastname,Email,Username,Password,ProfileUri,IsDeleted")] User user)
         {
             setAccessToken();
 

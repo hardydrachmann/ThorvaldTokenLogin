@@ -88,8 +88,6 @@ namespace IdentityAPI.DAL.DAO
                     .HasName("IX_User")
                     .IsUnique();
 
-                entity.Property(e => e.BirthDate).HasColumnType("date");
-
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(50);

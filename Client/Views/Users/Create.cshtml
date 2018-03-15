@@ -4,9 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
-
-<h4>User</h4>
+<h2>Create user</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -37,13 +35,13 @@
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsLocal" /> @Html.DisplayNameFor(model => model.IsLocal)
-                    </label>
-                </div>
-            </div>
+           @*<div class="form-group">
+               <div class="checkbox">
+                   <label>
+                       <input asp-for="IsLocal" /> @Html.DisplayNameFor(model => model.IsLocal)
+                   </label>
+               </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="BirthDate" class="control-label"></label>
                 <input asp-for="BirthDate" class="form-control" />

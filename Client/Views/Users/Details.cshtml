@@ -4,10 +4,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>User details</h2>
 
 <div>
-    <h4>User</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -35,17 +34,17 @@
             @Html.DisplayFor(model => model.Username)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Password)
+            Encrypted Password
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Password)
         </dd>
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.IsLocal)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.IsLocal)
-        </dd>
+        </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.BirthDate)
         </dt>
@@ -71,10 +70,10 @@
 
         <dd>
             @foreach (var item in Model.Roles)
-            {
-                @Html.DisplayFor(model => item.Name)
-                <br />
-            }
+        {
+            @Html.DisplayFor(model => item.Name)
+            <br />
+    }
         </dd>
 
     </dl>

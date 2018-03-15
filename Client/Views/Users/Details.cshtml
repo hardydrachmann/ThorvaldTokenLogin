@@ -7,10 +7,16 @@
 <h2>User Details</h2>
 <hr />
 
-
-    <div>
-        <img src="@Html.DisplayFor(model => model.ProfileUri)" height="150" width="150" style="display: block; margin:0 auto" onerror="this.src='https://balinkbayan.ph/Linkapil-Project/Content/img/user.png'"; />
-    </div>
+<div>
+    @if (@Model.ProfileUri == null)
+    {
+        <img src="https://balinkbayan.ph/Linkapil-Project/Content/img/user.png" height="150" width="150" style="display: block; margin:0 auto" />
+    }
+    else
+    {
+        <img src="@Model.ProfileUri" height="150" width="150" style="display: block; margin:0 auto" />
+    }
+</div>
 
 <div>
     <dl class="dl-horizontal">
@@ -27,16 +33,16 @@
             @Html.DisplayFor(model => model.Lastname)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.Username)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Username)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.IsDeleted)

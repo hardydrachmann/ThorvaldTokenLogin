@@ -26,11 +26,11 @@ namespace Client.BE
         public string Email { get; set; }
 
         [Required]
-        [MinLength(6)]
+        [MinLength(5)]
         public string Username { get; set; }
 
         [Required]
-        [MinLength(6)]
+        [MinLength(5)]
         public string Password { get; set; }
 
         [Display(Name = "Profile URL")]

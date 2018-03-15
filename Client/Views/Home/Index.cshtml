@@ -7,11 +7,14 @@
 
 </head>
 <body class="col-lg-12 col-lg-offset-0">
-    <div id="container1" class="container">
-        <h2 style="text-align:center"> &#8595; Available Functions &#8595;</h2>
-        <button class="myButton" id="myButton" onclick="location.href='@Url.Action("Index", "Users")'">Users</button>
-        <button class="myButton" id="myButton" onclick="location.href='@Url.Action("Index", "Roles")'">Roles</button>
-    </div>
+    @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+    {
+        <div id="container1" class="container">
+            <h2 style="text-align:center"> &#8595; Available Admin Functions &#8595;</h2>
+            <button class="myButton" id="myButton" onclick="location.href='@Url.Action("Index", "Users")'">Users</button>
+            <button class="myButton" id="myButton" onclick="location.href='@Url.Action("Index", "Roles")'">Roles</button>
+        </div>
+    }
     <br />
 
     <h2 style="text-align:center"><strong>You are logged in as</strong></h2>

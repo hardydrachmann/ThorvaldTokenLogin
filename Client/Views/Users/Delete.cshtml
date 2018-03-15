@@ -11,6 +11,16 @@
     <h3>Are you sure you want to delete <strong>@Model.Firstname @Model.Lastname</strong>?</h3>
     <br />
 
+    <div>
+        @if (@Model.ProfileUri == null)
+        {
+            <img src="https://balinkbayan.ph/Linkapil-Project/Content/img/user.png" height="150" width="150" style="display: block; margin:0 auto" />
+        }
+        else
+        {
+            <img src="@Model.ProfileUri" height="150" width="150" style="display: block; margin:0 auto" />
+        }
+    </div>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Firstname)
@@ -25,16 +35,16 @@
             @Html.DisplayFor(model => model.Lastname)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.Username)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Username)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
         </dd>
     </dl>
 

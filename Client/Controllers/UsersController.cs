@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Client.Models;
 
 namespace Client.Controllers
 {
@@ -59,7 +60,7 @@ namespace Client.Controllers
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Firstname,Lastname,Email,Username,Password,IsLocal,BirthDate,ProfileUri,IsDeleted")] User user)
+        public async Task<IActionResult> Create([Bind("Id,Firstname,Lastname,Email,Username,Password,ProfileUri,IsDeleted")] User user)
         {
             setAccessToken();
 
@@ -82,6 +83,9 @@ namespace Client.Controllers
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
+            UserViewModel uvm = new UserViewModel();
+            List<Role> roleList = new List<Role>();
             setAccessToken();
 
             if (id == null)
@@ -90,21 +94,24 @@ namespace Client.Controllers
             }
 
             User user = getUserById(id);
-            //string dateString = user.BirthDate.ToString("yyyy-MM-dd");
-            //user.BirthDate = DateTime.Parse(dateString);
-
+            var response = client.GetStringAsync("http://localhost:5001/api/Roles/");
+            roleList = JsonConvert.DeserializeObject<List<Role>>(response.Result);
 
             if (user == null)
             {
                 return NotFound();
             }
-            return View(user);
+
+            uvm.User = user;
+            uvm.Roles = roleList;
+
+            return View(uvm);
         }
 
         // PUT: Users/Edit/5
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditConfirmed(int id, [Bind("Id,Firstname,Lastname,Email,Username,Password,IsLocal,BirthDate,ProfileUri,IsDeleted")] User user)
+        public async Task<IActionResult> EditConfirmed(int id, [Bind("Id,Firstname,Lastname,Email,Username,Password,ProfileUri,IsDeleted")] User user)
         {
             setAccessToken();
 

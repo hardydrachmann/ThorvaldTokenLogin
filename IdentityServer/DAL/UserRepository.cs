@@ -56,7 +56,7 @@ namespace IdentityServer.DAL
             }
         }
 
-        //Gets all users from Api, using an HttpClient
+        // Get all users via API, using a HttpClient
         private async Task<string> getAllUsers()
         {
             try { 

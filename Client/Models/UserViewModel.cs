@@ -8,7 +8,7 @@ namespace Client.Models
 {
     public class UserViewModel
     {
-        public List<User> users;
-        public List<Role> roles;
+        public User User { get; set; }
+        public List<Role> Roles { get; set; }
     }
 }

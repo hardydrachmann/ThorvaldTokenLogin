@@ -6,9 +6,11 @@
 
 <h2>Delete user</h2>
 
-<h3>Are you sure you want to delete user?</h3>
 <div>
     <hr />
+    <h3>Are you sure you want to delete <strong>@Model.Firstname @Model.Lastname</strong>?</h3>
+    <br />
+
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Firstname)
@@ -35,17 +37,17 @@
             @Html.DisplayFor(model => model.Username)
         </dd>
         @*<dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>*@
+                @Html.DisplayNameFor(model => model.Password)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Password)
+            </dd>*@
         @*<dt>
-            @Html.DisplayNameFor(model => model.IsLocal)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsLocal)
-        </dd>*@
+                @Html.DisplayNameFor(model => model.IsLocal)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsLocal)
+            </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.BirthDate)
         </dt>
@@ -53,22 +55,22 @@
             @Html.DisplayFor(model => model.BirthDate)
         </dd>
         @*<dt>
-            @Html.DisplayNameFor(model => model.ProfileUri)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ProfileUri)
-        </dd>*@
+                @Html.DisplayNameFor(model => model.ProfileUri)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ProfileUri)
+            </dd>*@
         @*<dt>
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsDeleted)
-        </dd>*@
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsDeleted)
+            </dd>*@
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Yes" class="btn btn-success" />
+        <a class="btn btn-danger" asp-action="Index">No</a>
     </form>
 </div>

@@ -7,8 +7,8 @@
 <h2>Edit user</h2>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <form asp-action="Edit">
+        <div class="col-md-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -33,16 +33,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" value="" class="form-control"/>
+                <input asp-for="Password" value="" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsLocal" /> @Html.DisplayNameFor(model => model.IsLocal)
-                    </label>
-                </div>
-            </div>*@
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsLocal" /> @Html.DisplayNameFor(model => model.IsLocal)
+                        </label>
+                    </div>
+                </div>*@
             <div class="form-group">
                 <label asp-for="BirthDate" class="control-label"></label>
                 <input asp-for="BirthDate" class="form-control" />
@@ -61,14 +61,23 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a class="btn btn-danger" asp-action="Index">Cancel</a>
             </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+        </div>
+        @*<div class="col-md-6">
+            <div class="form-group">
+                @foreach (var item in Model.Roles)
+                {
+                    <label asp-for="Roles" class="control-label"></label>
+                    <input asp-for=@item.Name type="checkbox"/>
+                    <span asp-validation-for="Roles" class="text-danger"></span>
+                }
+
+            </div>
+        </div>*@
+    </form>
 </div>
 
 @section Scripts {

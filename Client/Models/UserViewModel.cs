@@ -9,5 +9,6 @@ namespace Client.Models
     public class UserViewModel
     {
         public List<User> users;
+        public List<Role> roles;
     }
 }

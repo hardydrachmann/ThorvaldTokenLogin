@@ -1,51 +1,115 @@
 ﻿@using Microsoft.AspNetCore.Authentication;
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-@{ ViewData["Title"] = "Home Page"; }
+@{
+    ViewData["Title"] = "Home Page";
+}
+<body>
+    <div id="container1" class="container">
+        <h2 style="text-align:center"> &#8595; Available Functions &#8595;</h2>
+        <button class="myButton" id="myButton" onclick="location.href='@Url.Action("Index", "Users")'">Users</button>
+        <button class="myButton" id="myButton" onclick="location.href='@Url.Action("Index", "Roles")'">Roles</button>
+    </div>
+    <br />
 
+    <h2 style="text-align:center"><strong>You are logged in as</strong></h2>
+    <table class="table">
+        <thead>
+            <tr class="tableHeaderBG">
+                @foreach (var claim in User.Claims)
+                {
+                    <th>
+                        @claim.Type
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @foreach (var claim in User.Claims)
+                {
+                    <td>
+                        @claim.Value
+                    </td>
 
+                }
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <br />
 
-
-<div>
-    Token expires at:
-    <button id="btnTokenExpiresAt">Show</button>
-    <label id="lblTokenExpiresAt"></label>
-    <script>
-    $(document).ready(function () {
-        $("#btnTokenExpiresAt").click(function () { 
-           $("#lblTokenExpiresAt").text("@await ViewContext.HttpContext.GetTokenAsync("expires_at")");
-        })
-    })
-    </script>
-</div>
-
-<dt>identity token</dt>
-<dd>@await ViewContext.HttpContext.GetTokenAsync("id_token")</dd>
-
-<dt>access token</dt>
-<dd>@await ViewContext.HttpContext.GetTokenAsync("access_token")</dd>
-
-<dt>refresh token</dt>
-<dd>@await ViewContext.HttpContext.GetTokenAsync("refresh_token")</dd>
-
-<div>
-    <dl>
-        @foreach (var claim in User.Claims)
-        {
-            <dt>@claim.Type</dt>
-            <dd>@claim.Value</dd>
-        }
-    </dl>
 
     <div>
-        @foreach (var claim in User.Claims)
-        {
-            <div>
-                @if (claim.Type == "picture")
-                {
-                    <img src="@claim.Value" />
-                }
-            </div>
-        }
+        <p style="font-size:18px;"><strong>Identity Token:</strong></p>
+        <p style="word-wrap:break-word;">@await ViewContext.HttpContext.GetTokenAsync("id_token")</p>
+        <br />
     </div>
-</div>
+    <div>
+        <p style="font-size:18px;"><strong>Access Token:</strong></>
+        <p style="word-wrap:break-word;">@await ViewContext.HttpContext.GetTokenAsync("access_token")</p>
+        <br />
+    </div>
+    <div>
+        <p style="font-size:18px;"><strong>Refresh Token:</strong></p>
+        <p style="word-wrap:break-word;">@await ViewContext.HttpContext.GetTokenAsync("refresh_token")</p>
+    </div>
+    <br />
+    <div>
+        <p style="font-size:18px;"><strong>Token expires at:</strong></p>
+        <p style="word-wrap:break-word;">@await ViewContext.HttpContext.GetTokenAsync("expires_at")</p>
+    </div>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<div>
+        <strong>
+            Token expires at:
+        </strong>
+        <button id="btnTokenExpiresAt">Show</button>
+        <p style="word-wrap:break-word;">@await ViewContext.HttpContext.GetTokenAsync("expires_at")</p>
+        <label id="lblTokenExpiresAt"></label>
+        <script>
+        $(document).ready(function () {
+            $("#btnTokenExpiresAt").click(function () {
+               $("#lblTokenExpiresAt").text("@await ViewContext.HttpContext.GetTokenAsync("expires_at")");
+            })
+        })
+        </script>
+    </div>*@
+
+@*<div>
+        <dl>
+            @foreach (var claim in User.Claims)
+            {
+                <dt>@claim.Type</dt>
+                <dd style="white-space:nowrap;">@claim.Value</dd>
+            }
+        </dl>
+
+        <div>
+            @foreach (var claim in User.Claims)
+            {
+                <div>
+                    @if (claim.Type == "picture")
+                    {
+                        <img src="@claim.Value" />
+                    }
+                </div>
+            }
+        </div>
+    </div>*@

@@ -75,7 +75,6 @@ namespace Client.Controllers
                     byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     await client.PostAsync("http://localhost:5001/api/roles/", byteContent);
                 }
-
                 return RedirectToAction(nameof(Index));
             }
             return View(role);

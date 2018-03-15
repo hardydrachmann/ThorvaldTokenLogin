@@ -5,12 +5,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using IdentityAPI.DAL.Repositories;
 using IdentityAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityAPI.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [Produces("application/json")]
     [Route("api/Users")]
     public class UsersController : Controller
@@ -24,9 +25,9 @@ namespace IdentityAPI.Controllers
             userRepo = new UserRepository(_serviceProvider);
         }
 
-        //GET: api/Login
+        //GET: api/users
         [HttpPut]
-        public Task<int> Update(DTOuser user)
+        public Task<int> Update([FromBody]DTOuser user)
         {
             return userRepo.Update(user);
         }
@@ -47,13 +48,6 @@ namespace IdentityAPI.Controllers
         public Task<int> Create([FromBody]DTOuser user)
         {
             return userRepo.Create(user);
-        }
-
-        [HttpDelete]
-        public Task<int> Delete(DTOuser user)
-        {
-            user.IsDeleted = true;
-            return userRepo.Update(user);
         }
     }
 }

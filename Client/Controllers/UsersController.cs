@@ -7,9 +7,13 @@ using Client.BE;
 using BCrypt.Net;
 using Microsoft.AspNetCore.Authentication;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Client.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         HttpClient client;
@@ -17,10 +21,7 @@ namespace Client.Controllers
         // GET: Users
         public IActionResult Index()
         {
-            if (client == null)
-            {
-                SetAccessToken();
-            }
+            setAccessToken();
 
             List<User> userList = new List<User>();
 
@@ -33,52 +34,39 @@ namespace Client.Controllers
         //GET: Users/Details/5
         public IActionResult Details(int? id)
         {
-            if (client == null)
-            {
-                SetAccessToken();
-            }
-
-            User user = new User();
+            setAccessToken();
 
             if (id == null)
             {
-                
                 return NotFound();
             }
-            
-            var response = client.GetStringAsync("http://localhost:5001/api/users/" + id);
-            user = JsonConvert.DeserializeObject<User>(response.Result);
+
+            User user = getUserById(id);
 
             if (user == null)
             {
                 return NotFound();
             }
-
             return View(user);
         }
 
-        //// GET: Users/Create
+        // GET: Users/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        //// POST: Users/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Firstname,Lastname,Email,Username,Password,IsLocal,BirthDate,ProfileUri,IsDeleted")] User user)
         {
-            if (client == null)
-            {
-                SetAccessToken();
-            }
+            setAccessToken();
 
             if (ModelState.IsValid)
             {
-                string userCredentials = user.Username + user.Password;
-                user.Password = BCrypt.Net.BCrypt.HashPassword(userCredentials, SaltRevision.Revision2B);
+                user = encryptUserCredentials(user);
+
 
                 var myContent = JsonConvert.SerializeObject(user);
                 var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
@@ -86,125 +74,129 @@ namespace Client.Controllers
                 byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 var result = client.PostAsync("http://localhost:5001/api/users/", byteContent).Result;
 
-               //HttpContent content = new StringContent(JsonConvert.SerializeObject(user), System.Text.Encoding.UTF8, "application/json");
-               //await client.PostAsync("http://localhost:5001/api/users/", content);
-
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
         }
 
-        //// GET: Users/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (client == null)
-        //    {
-        //        SetAccessToken();
-        //    }
-
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var user = await _context.User.SingleOrDefaultAsync(m => m.Id == id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(user);
-        //}
-
-        //// POST: Users/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Firstname,Lastname,Email,Username,Password,IsLocal,BirthDate,ProfileUri,IsDeleted")] User user)
-        //{
-        //    if (client == null)
-        //    {
-        //        SetAccessToken();
-        //    }
-
-        //    if (id != user.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(user);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!UserExists(user.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(user);
-        //}
-
-        //// GET: Users/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (client == null)
-        //    {
-        //        SetAccessToken();
-        //    }
-
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var user = await _context.User
-        //        .SingleOrDefaultAsync(m => m.Id == id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(user);
-        //}
-
-        //// POST: Users/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    if (client == null)
-        //    {
-        //        SetAccessToken();
-        //    }
-
-        //    var user = await _context.User.SingleOrDefaultAsync(m => m.Id == id);
-        //    _context.User.Remove(user);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //private bool UserExists(int id)
-        //{
-        //    return _context.User.Any(e => e.Id == id);
-        //}
-
-        public void SetAccessToken()
+        // GET: Users/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            var accessToken = HttpContext.GetTokenAsync("access_token").Result;
+            setAccessToken();
 
-            client = new HttpClient();
-            client.SetBearerToken(accessToken);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            User user = getUserById(id);
+            //string dateString = user.BirthDate.ToString("yyyy-MM-dd");
+            //user.BirthDate = DateTime.Parse(dateString);
+
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // PUT: Users/Edit/5
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditConfirmed(int id, [Bind("Id,Firstname,Lastname,Email,Username,Password,IsLocal,BirthDate,ProfileUri,IsDeleted")] User user)
+        {
+            setAccessToken();
+
+            if (id != user.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    user = encryptUserCredentials(user);
+
+                    var myContent = JsonConvert.SerializeObject(user);
+                    var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+                    var byteContent = new ByteArrayContent(buffer);
+                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    var result = client.PutAsync("http://localhost:5001/api/users/", byteContent).Result;
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return NotFound();
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(user);
+        }
+
+        //GET: Users/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            setAccessToken();
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            User user = getUserById(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // POST: Users/Delete/5 : only soft deletes a user in the database (using UPDATE)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            setAccessToken();
+
+            User user = getUserById(id);
+            user.IsDeleted = true;
+
+            var myContent = JsonConvert.SerializeObject(user);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var result = client.PutAsync("http://localhost:5001/api/users/", byteContent).Result;
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private void setAccessToken()
+        {
+            if (client == null)
+            {
+                var accessToken = HttpContext.GetTokenAsync("access_token").Result;
+
+                client = new HttpClient();
+                client.SetBearerToken(accessToken);
+            }
+        }
+
+        private User getUserById(int? id)
+        {
+            User user = new User();
+
+            var response = client.GetStringAsync("http://localhost:5001/api/users/" + id);
+            user = JsonConvert.DeserializeObject<User>(response.Result);
+            return user;
+        }
+
+        private User encryptUserCredentials(User user)
+        {
+            string userCredentials = user.Username + user.Password;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(userCredentials, SaltRevision.Revision2B);
+            return user;
         }
     }
 }

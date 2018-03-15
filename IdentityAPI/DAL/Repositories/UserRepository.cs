@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace IdentityAPI.DAL.Repositories
@@ -30,16 +29,12 @@ namespace IdentityAPI.DAL.Repositories
             }
         }
 
-        public async Task<int> Delete(int id)
+        // Only soft delete a user in the database - therefore using below UPDATE method instead
+        public Task<int> Delete(int id)
         {
-            //using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
-            //{
-            //    context.User.Remove(dtoConverter.ConvertDTO(entity));
-            //    return await context.SaveChangesAsync();
-            //}
             throw new NotImplementedException();
         }
-
+       
         public async Task<DTOuser> Get(int id)
         {
             using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
@@ -62,8 +57,7 @@ namespace IdentityAPI.DAL.Repositories
                     dtoUsers.Add(dtoConverter.ConvertUser(user));
                 }
                 return dtoUsers;
-            }
-            
+            }            
         }
 
         public async Task<int> Update(DTOuser entity)
@@ -71,7 +65,6 @@ namespace IdentityAPI.DAL.Repositories
             using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
             {
                 context.Update(dtoConverter.ConvertDTOUser(entity));
-
                 return await context.SaveChangesAsync();
             }
         }

@@ -4,9 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
-
-<h4>User</h4>
+<h2>Edit user</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -35,16 +33,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" value="" class="form-control"/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <div class="checkbox">
                     <label>
                         <input asp-for="IsLocal" /> @Html.DisplayNameFor(model => model.IsLocal)
                     </label>
                 </div>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="BirthDate" class="control-label"></label>
                 <input asp-for="BirthDate" class="form-control" />

@@ -27,9 +27,9 @@ namespace IdentityServer
                 .AddProfileService<ProfileService>()
 
             // CERTIFICATES:
-            /*.AddDeveloperSigningCredential(persistKey: false)*/   
-            .AddSigningCredential(new X509Certificate2(Path.Combine(@"C:\Program Files (x86)\Windows Kits\Certificate\IdentityServer4Auth.pfx"), "Thorvald"))
-            
+            .AddDeveloperSigningCredential(persistKey: false)
+            //.AddSigningCredential(new X509Certificate2(Path.Combine(@"C:\Program Files (x86)\Windows Kits\Certificate\IdentityServer4Auth.pfx"), "Thorvald"))
+
             .Services.AddSingleton<IUserRepository, UserRepository>();
         }
 

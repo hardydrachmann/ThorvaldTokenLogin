@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using IdentityAPI.DTOs;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace IdentityAPI.DAL.Repositories

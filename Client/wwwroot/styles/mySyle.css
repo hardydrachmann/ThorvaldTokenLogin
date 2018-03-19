@@ -68,8 +68,8 @@ html, body {
 
 
 #crudBtnSize {
-    width:70px;
-    height:35px;
+    width: 70px;
+    height: 35px;
 }
 
 #myButton {
@@ -90,3 +90,40 @@ html, body {
     margin-top: 5%;
     text-align: center;
 }
+
+/* START OF: 'Authorized?' on Users Index page blinking dot if not authorized */
+.blink {
+    animation: blink-animation 5s steps(5, start) infinite;
+    -webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
+@-webkit-keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
+#dotBlinkRed {
+    height: 1em;
+    width: 1em;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+    border: 0.15em solid darkslategrey;
+}
+
+#dotGreen {
+    height: 1em;
+    width: 1em;
+    background-color: lime;
+    border-radius: 50%;
+    display: inline-block;
+    border: 0.15em solid darkslategrey;
+}
+/* END OF: 'Authorized?' on Users Index page blinking dot if not authorized */

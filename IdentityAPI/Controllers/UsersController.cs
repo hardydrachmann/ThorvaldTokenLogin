@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using IdentityAPI.DAL.Repositories;
 using IdentityAPI.DTOs;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityAPI.Controllers
@@ -18,18 +15,35 @@ namespace IdentityAPI.Controllers
     {
         IServiceProvider _serviceProvider;
         UserRepository userRepo;
+        UserRoleRepository userRoleRepo;
 
         public UsersController(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             userRepo = new UserRepository(_serviceProvider);
+            userRoleRepo = new UserRoleRepository(_serviceProvider);
         }
 
         //GET: api/users
         [HttpPut]
-        public Task<int> Update([FromBody]DTOuser user)
+        public async Task<int> Update([FromBody]DTOUserWithRoles dtoUserRoles)
         {
-            return userRepo.Update(user);
+            if (dtoUserRoles.Roles != null)
+            {
+                userRoleRepo.Delete(dtoUserRoles.User.Id);
+
+                foreach (var item in dtoUserRoles.Roles)
+                {
+                    DTOUserRole dtoUserRole = new DTOUserRole();
+                    dtoUserRole.RoleId = item.Id;
+                    dtoUserRole.Role = item;
+                    dtoUserRole.UserId = dtoUserRoles.User.Id;
+                    dtoUserRole.User = dtoUserRoles.User;
+
+                    userRoleRepo.Create(dtoUserRole);
+                }
+            }
+            return await userRepo.Update(dtoUserRoles.User);
         }
 
         [HttpGet]
@@ -45,9 +59,23 @@ namespace IdentityAPI.Controllers
         }
 
         [HttpPost]
-        public Task<int> Create([FromBody]DTOuser user)
+        public async Task<int> Create([FromBody]DTOUserWithRoles userWithRole)
         {
-            return userRepo.Create(user);
+            userRepo.Create(userWithRole.User);
+
+            var user = userRepo.GetByUsername(userWithRole.User.Username).Result;
+
+            foreach (var item in userWithRole.Roles)
+            {
+                DTOUserRole dtoUserRole = new DTOUserRole();
+                dtoUserRole.RoleId = item.Id;
+                dtoUserRole.Role = item;
+                dtoUserRole.UserId = user.Id;
+                dtoUserRole.User = user;
+
+                userRoleRepo.Create(dtoUserRole);
+            }
+            return 1;
         }
     }
 }

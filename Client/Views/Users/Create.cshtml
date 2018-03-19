@@ -1,4 +1,4 @@
-﻿@model Client.BE.User
+﻿@model Client.Models.UserViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -8,43 +8,43 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <img id="userImage" src="http://www.dubaihse.com/img/comment_users/logo_4.png"/>
+        <img id="userImage" src="http://www.dubaihse.com/img/comment_users/logo_4.png" />
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Firstname" class="control-label"></label>
-                <input asp-for="Firstname" class="form-control" />
-                <span asp-validation-for="Firstname" class="text-danger"></span>
+                <label asp-for="@Model.User.Firstname" class="control-label"></label>
+                <input asp-for="@Model.User.Firstname" class="form-control" />
+                <span asp-validation-for="@Model.User.Firstname" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Lastname" class="control-label"></label>
-                <input asp-for="Lastname" class="form-control" />
-                <span asp-validation-for="Lastname" class="text-danger"></span>
+                <label asp-for="@Model.User.Lastname" class="control-label"></label>
+                <input asp-for="@Model.User.Lastname" class="form-control" />
+                <span asp-validation-for="@Model.User.Lastname" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
+                <label asp-for="@Model.User.Username" class="control-label"></label>
+                <input asp-for="@Model.User.Username" class="form-control" />
+                <span asp-validation-for="@Model.User.Username" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <label asp-for="@Model.User.Password" class="control-label"></label>
+                <input asp-for="@Model.User.Password" class="form-control" />
+                <span asp-validation-for="@Model.User.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <label asp-for="@Model.User.Email" class="control-label"></label>
+                <input asp-for="@Model.User.Email" class="form-control" />
+                <span asp-validation-for="@Model.User.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ProfileUri" class="control-label"></label>
-                <input asp-for="ProfileUri" class="form-control" />
-                <span asp-validation-for="ProfileUri" class="text-danger"></span>
+                <label asp-for="@Model.User.ProfileUri" class="control-label"></label>
+                <input asp-for="@Model.User.ProfileUri" class="form-control" />
+                <span asp-validation-for="@Model.User.ProfileUri" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                        <input asp-for="@Model.User.IsDeleted" /> @Html.DisplayNameFor(model => model.User.IsDeleted)
                     </label>
                 </div>
             </div>
@@ -52,6 +52,34 @@
                 <input type="submit" value="Create" class="btn btn-success" />
                 <a class="btn btn-danger" asp-action="Index">Cancel</a>
             </div>
+
+
+
+
+            <div class="form-group userRole">
+                <h3><label class="control-label">Role Options:</label></h3>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            @for (int i = 0; i < @Model.Roles.Count(); i++)
+                            {
+                                <input asp-for="@Model.Roles[i].isChecked" type="checkbox" />
+                                <label asp-for="@Model.Roles[i].isChecked">@Model.Roles[i].Name</label>
+
+                                @*If these are not included, all OptionIds become 0 and all OptionName becomes null*@
+                                @Html.HiddenFor(x => @Model.Roles[i].Id)
+                                @Html.HiddenFor(y => @Model.Roles[i].Name)
+                                <br />
+                            }
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
         </form>
     </div>
 </div>

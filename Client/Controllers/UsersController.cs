@@ -54,22 +54,45 @@ namespace Client.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
-            return View();
+            setAccessToken();
+
+            UserViewModel uvm = new UserViewModel();
+            List<Role> roleList = new List<Role>();
+
+            var response = client.GetStringAsync("http://localhost:5001/api/Roles/");
+            roleList = JsonConvert.DeserializeObject<List<Role>>(response.Result);
+
+            if (roleList != null)
+            {
+                uvm.Roles = roleList;
+                uvm.User = null;
+            }
+            return View(uvm);
         }
 
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Firstname,Lastname,Email,Username,Password,ProfileUri,IsDeleted")] User user)
+        public async Task<IActionResult> Create([Bind("Id,Firstname,Lastname,Email,Username,Password,ProfileUri,IsDeleted")] User user, [Bind("Id, Name")] List<Role> roles)
         {
             setAccessToken();
-
+            List<Role> selectedRoleList = new List<Role>();
+            UserViewModel uvm = new UserViewModel();
             if (ModelState.IsValid)
             {
                 user = encryptUserCredentials(user);
 
+                foreach (var role in roles)
+                {
+                    if (role.isChecked == true)
+                    {
+                        selectedRoleList.Add(role);
+                    }
+                }
+                uvm.User = user;
+                uvm.Roles = selectedRoleList;
 
-                var myContent = JsonConvert.SerializeObject(user);
+                var myContent = JsonConvert.SerializeObject(uvm);
                 var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
                 var byteContent = new ByteArrayContent(buffer);
                 byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -83,9 +106,9 @@ namespace Client.Controllers
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-
             UserViewModel uvm = new UserViewModel();
             List<Role> roleList = new List<Role>();
+
             setAccessToken();
 
             if (id == null)
@@ -102,8 +125,20 @@ namespace Client.Controllers
                 return NotFound();
             }
 
+            List<Role> newRoleList = new List<Role>();
+            foreach (var role in roleList)
+            {
+                foreach (var userRole in user.Roles)
+                {
+                    if (userRole.Id == role.Id)
+                    {
+                        role.isChecked = true;
+                    }
+                }
+                newRoleList.Add(role);
+            }
             uvm.User = user;
-            uvm.Roles = roleList;
+            uvm.Roles = newRoleList;
 
             return View(uvm);
         }
@@ -111,9 +146,11 @@ namespace Client.Controllers
         // PUT: Users/Edit/5
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditConfirmed(int id, [Bind("Id,Firstname,Lastname,Email,Username,Password,ProfileUri,IsDeleted")] User user)
+        public async Task<IActionResult> EditConfirmed(int id, [Bind("Id,Firstname,Lastname,Email,Username,Password,ProfileUri,IsDeleted")] User user, [Bind("Id, Name")] List<Role> roles)
         {
             setAccessToken();
+            List<Role> selectedRoleList = new List<Role>();
+            UserViewModel uvm = new UserViewModel();
 
             if (id != user.Id)
             {
@@ -126,7 +163,17 @@ namespace Client.Controllers
                 {
                     user = encryptUserCredentials(user);
 
-                    var myContent = JsonConvert.SerializeObject(user);
+                    foreach (var role in roles)
+                    {
+                        if (role.isChecked == true)
+                        {
+                            selectedRoleList.Add(role);
+                        }
+                    }
+                    uvm.User = user;
+                    uvm.Roles = selectedRoleList;
+
+                    var myContent = JsonConvert.SerializeObject(uvm);
                     var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
                     var byteContent = new ByteArrayContent(buffer);
                     byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -166,11 +213,16 @@ namespace Client.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             setAccessToken();
+            UserViewModel uvm = new UserViewModel();
+
 
             User user = getUserById(id);
             user.IsDeleted = true;
 
-            var myContent = JsonConvert.SerializeObject(user);
+            uvm.User = user;
+            uvm.Roles = null;
+
+            var myContent = JsonConvert.SerializeObject(uvm);
             var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");

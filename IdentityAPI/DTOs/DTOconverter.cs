@@ -87,5 +87,25 @@ namespace IdentityAPI.DTOs
             };
             return role;
         }
+        public DTOUserRole ConvertUserRole(UserRole userRole)
+        {
+            DTOUserRole dtoUserRole = new DTOUserRole
+            {
+                UserId = userRole.UserId,
+                RoleId = userRole.RoleId
+            };
+
+            return dtoUserRole;
+        }
+
+        public UserRole ConvertDTOUserRole(DTOUserRole dtoUserRole)
+        {
+            UserRole userRole = new UserRole
+            {
+                UserId = dtoUserRole.UserId,
+                RoleId = dtoUserRole.RoleId
+            };
+            return userRole;
+        }
     }
 }

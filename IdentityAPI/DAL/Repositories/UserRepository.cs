@@ -68,5 +68,13 @@ namespace IdentityAPI.DAL.Repositories
                 return await context.SaveChangesAsync();
             }
         }
+        public async Task<DTOuser> GetByUsername(string username)
+        {
+            using (var context = new ThorvaldIdentityDBContext(_serviceProvider.GetRequiredService<DbContextOptions<ThorvaldIdentityDBContext>>()))
+            {
+                var user = await context.User.Include(u => u.UserRole).ThenInclude(r => r.Role).FirstOrDefaultAsync(u => u.Username == username);
+                return dtoConverter.ConvertUser(user);
+            }
+        }
     }
 }

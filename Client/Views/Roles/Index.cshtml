@@ -10,7 +10,7 @@
         }
     </style>
 </head>
-
+<br />
 <body class="col-lg-12 col-lg-offset-0">
     <h2>All Roles</h2>
     <div class="btnPadding">
@@ -40,9 +40,9 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td class="alignButtons">
-                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a id="crudBtnSize" class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a><br />
+                        <a id="crudBtnSize" class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a><br />
+                        <a id="crudBtnSize" class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
             }

@@ -41,9 +41,36 @@ html, body {
     text-align: right;
 }
 
+#userImage {
+    border-radius: 50%;
+    border: 0.15em solid darkslategrey;
+    padding: 0.3em;
+    height: 150px;
+    width: 150px;
+    display: block;
+    margin: 0 auto;
+}
+
+#clientNavIconSize {
+    height: 2.5em;
+    width: 2.5em;
+}
+
+#usersIndexIconSize {
+    border-radius: 50%;
+    border: 0.15em solid darkslategrey;
+    padding: 0.3em;
+    height: 8em;
+    width: 8em;
+    display: block;
+    margin: 0 auto;
+}
 
 
-
+#crudBtnSize {
+    width:70px;
+    height:35px;
+}
 
 #myButton {
     width: 35%;

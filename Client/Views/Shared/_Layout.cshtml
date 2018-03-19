@@ -32,13 +32,30 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="navbar-left"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="navbar-left">
+                        <a asp-area="" asp-controller="Home" asp-action="Index">
+                            <img id="clientNavIconSize" src="http://www.pvhc.net/img189/eoeqkjfjaeqibzbpyngb.png" /><br />Home
+                        </a>
+                    </li>
                     @if (ViewContext.HttpContext.User.IsInRole("Admin"))
                     {
-                        <li class="navbar-left"><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
-                        <li class="navbar-left"><a asp-area="" asp-controller="Roles" asp-action="Index">Roles</a></li>
+                        <li class="navbar-left">
+                            <a asp-area="" asp-controller="Users" asp-action="Index">
+                                <img id="clientNavIconSize" src="http://icons.iconarchive.com/icons/aha-soft/people/256/users-icon.png" /><br />Users
+                            </a>
+                        </li>
+
+                        <li class="navbar-left">
+                            <a asp-area="" asp-controller="Roles" asp-action="Index">
+                                <img id="clientNavIconSize" src="https://www.iconshock.com/image/Brilliant/Networking/role" /><br />Roles
+                            </a>
+                        </li>
                     }
-                    <li class="navbar-right"><a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+                    <li class="navbar-right">
+                        <a asp-area="" asp-controller="Home" asp-action="Logout">
+                            <img id="clientNavIconSize" src="http://icongal.com/gallery/download/154377/256/png" /><br />Logout
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

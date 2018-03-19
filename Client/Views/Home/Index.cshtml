@@ -10,12 +10,33 @@
     @if (ViewContext.HttpContext.User.IsInRole("Admin"))
     {
         <div id="container1" class="container">
-            <h2 style="text-align:center"> &#8595; Available Admin Functions &#8595;</h2>
-            <button class="myButton" id="myButton" onclick="location.href='@Url.Action("Index", "Users")'">Users</button>
-            <button class="myButton" id="myButton" onclick="location.href='@Url.Action("Index", "Roles")'">Roles</button>
+            <h2 style="text-align:center"> &#8595; Administrator Functions &#8595;</h2>
+            <button class="myButton" id="myButton" onclick="location.href='@Url.Action("Index", "Users")'">
+                <img src="http://icons.iconarchive.com/icons/aha-soft/people/256/users-icon.png" style="height:1.5em; width:1.5em;" /><br />Users</button>
+            <button class="myButton" id="myButton" onclick="location.href='@Url.Action("Index", "Roles")'"><img src="https://www.iconshock.com/image/Brilliant/Networking/role" style="height:1.5em; width:1.5em;" /><br />Roles</button>
         </div>
     }
-    <br />
+    <hr />
+    <br/>
+    <div>
+        @foreach (var claim in User.Claims)
+        {
+            <div>
+                @if (claim.Type == "picture")
+                {
+                    @if (claim.Value == null)
+                    {
+                        <img id="userImage" src="http://www.dubaihse.com/img/comment_users/logo_4.png" />
+                    }
+                    else
+                    {
+                        <img id="userImage" src="@claim.Value" />
+                    }
+                }
+            </div>
+        }
+    </div>
+
 
     <h2 style="text-align:center"><strong>You are logged in as</strong></h2>
     <table class="table">
@@ -24,7 +45,12 @@
                 @foreach (var claim in User.Claims)
                 {
                     <th>
-                        @claim.Type
+                        @if (claim.Type == "picture")
+                        { }
+                        else
+                        {
+                            @claim.Type
+                        }
                     </th>
                 }
             </tr>
@@ -34,9 +60,13 @@
                 @foreach (var claim in User.Claims)
                 {
                     <td>
-                        @claim.Value
+                        @if (claim.Type == "picture")
+                        { }
+                        else
+                        {
+                            @claim.Value
+                        }
                     </td>
-
                 }
             </tr>
         </tbody>
@@ -65,57 +95,3 @@
         <p style="word-wrap:break-word;">@await ViewContext.HttpContext.GetTokenAsync("expires_at")</p>
     </div>
 </body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@*<div>
-        <strong>
-            Token expires at:
-        </strong>
-        <button id="btnTokenExpiresAt">Show</button>
-        <p style="word-wrap:break-word;">@await ViewContext.HttpContext.GetTokenAsync("expires_at")</p>
-        <label id="lblTokenExpiresAt"></label>
-        <script>
-        $(document).ready(function () {
-            $("#btnTokenExpiresAt").click(function () {
-               $("#lblTokenExpiresAt").text("@await ViewContext.HttpContext.GetTokenAsync("expires_at")");
-            })
-        })
-        </script>
-    </div>*@
-
-@*<div>
-        <dl>
-            @foreach (var claim in User.Claims)
-            {
-                <dt>@claim.Type</dt>
-                <dd style="white-space:nowrap;">@claim.Value</dd>
-            }
-        </dl>
-
-        <div>
-            @foreach (var claim in User.Claims)
-            {
-                <div>
-                    @if (claim.Type == "picture")
-                    {
-                        <img src="@claim.Value" />
-                    }
-                </div>
-            }
-        </div>
-    </div>*@

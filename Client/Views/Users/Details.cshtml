@@ -3,18 +3,18 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<br />
 <h2>User Details</h2>
 <hr />
 
 <div>
     @if (@Model.ProfileUri == null)
     {
-        <img src="https://balinkbayan.ph/Linkapil-Project/Content/img/user.png" height="150" width="150" style="display: block; margin:0 auto" />
+        <img id="userImage" src="http://www.dubaihse.com/img/comment_users/logo_4.png"/>
     }
     else
     {
-        <img src="@Model.ProfileUri" height="150" width="150" style="display: block; margin:0 auto" />
+        <img id="userImage" src="@Model.ProfileUri" />
     }
 </div>
 

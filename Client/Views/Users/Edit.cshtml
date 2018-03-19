@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
+<br />
 <h2>Edit User</h2>
 <hr />
 
@@ -15,11 +15,11 @@
             <div>
                 @if (@Model.User.ProfileUri == null)
                 {
-                    <img src="https://balinkbayan.ph/Linkapil-Project/Content/img/user.png" height="150" width="150" style="display: block; margin:0 auto" />
+                    <img id="userImage" src="http://www.dubaihse.com/img/comment_users/logo_4.png"/>
                 }
                 else
                 {
-                    <img src="@Model.User.ProfileUri" height="150" width="150" style="display: block; margin:0 auto" />
+                    <img id="userImage" src="@Model.User.ProfileUri"/>
                 }
             </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>

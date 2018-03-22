@@ -10,7 +10,7 @@ namespace IdentityServer.DAL
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IEnumerable<User> _users;
+        private IEnumerable<User> _users;
 
         //Instantiates our singleton
         public UserRepository()
@@ -35,9 +35,9 @@ namespace IdentityServer.DAL
         {
             try
             {
-            return _users.FirstOrDefault(x => x.Id.ToString() == subjectId);
+                return _users.FirstOrDefault(x => x.Id.ToString() == subjectId);
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 throw e;
             }
@@ -48,7 +48,10 @@ namespace IdentityServer.DAL
         {
             try
             {
-            return _users.FirstOrDefault(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+                _users = JsonConvert.DeserializeObject<List<User>>(getAllUsers().Result);
+                return _users.FirstOrDefault(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+
             }
             catch (Exception e)
             {
@@ -59,17 +62,23 @@ namespace IdentityServer.DAL
         // Get all users via API, using a HttpClient
         private async Task<string> getAllUsers()
         {
-            try { 
-            using (var client = new HttpClient())
+            try
             {
-                var response = await client.GetStringAsync("http://localhost:5001/api/login/");
-                return response;
-            }
+                using (var client = new HttpClient())
+                {
+                    var response = await client.GetStringAsync("http://localhost:5001/api/login/");
+                    return response;
+                }
             }
             catch (Exception e)
             {
                 throw e;
             }
+        }
+
+        public async Task getUsers()
+        {
+            _users = JsonConvert.DeserializeObject<List<User>>(getAllUsers().Result);
         }
     }
 }

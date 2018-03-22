@@ -13,5 +13,7 @@ namespace IdentityServer.DAL
         User FindBySubjectId(string subjectId);
 
         User FindByUsername(string username);
+
+        Task getUsers();
     }
 }

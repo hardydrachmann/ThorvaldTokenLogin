@@ -97,7 +97,12 @@ namespace IdentityServer.Controllers.Account
                 // validate username/password
                 if (_userRepository.ValidateCredentials(model.Username, model.Password))
                 {
+
+                    
                     var user = _userRepository.FindByUsername(model.Username);
+                    _userRepository.getUsers();
+                    ProfileService.GetUserClaims(user);
+
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.Id.ToString(), user.Username));
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.

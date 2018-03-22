@@ -65,7 +65,10 @@ namespace IdentityServer.Controllers
             claimList.Add(new Claim(JwtClaimTypes.FamilyName, user.Lastname));
             claimList.Add(new Claim(JwtClaimTypes.Email, user.Email));
             claimList.Add(new Claim(JwtClaimTypes.PreferredUserName, user.Username));
-            claimList.Add(new Claim(JwtClaimTypes.Picture, user.ProfileUri));
+            if (user.ProfileUri != null)
+            {
+                claimList.Add(new Claim(JwtClaimTypes.Picture, user.ProfileUri));
+            }
 
             //roles       
             foreach (var role in user.Roles)

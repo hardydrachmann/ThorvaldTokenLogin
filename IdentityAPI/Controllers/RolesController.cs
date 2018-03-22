@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityAPI.DAL.Repositories;
 using IdentityAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityAPI.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [Produces("application/json")]
     [Route("api/Roles")]
     public class RolesController : Controller

@@ -6,22 +6,27 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Client.BE;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace Client.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
+
+        HttpClient client;
+
         // GET: Roles
         public async Task<IActionResult> Index()
         {
-            var response = "";
+            setAccessToken();
             List<Role> roles = new List<Role>();
-            using (var client = new HttpClient())
-            {
-                response = await client.GetStringAsync("http://localhost:5001/api/Roles");
-            }
+
+            var response = await client.GetStringAsync("http://localhost:5001/api/Roles");
+
             roles = JsonConvert.DeserializeObject<List<Role>>(response);
             return View(roles);
         }
@@ -29,7 +34,7 @@ namespace Client.Controllers
         // GET: Roles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            var response = "";
+            setAccessToken();
             Role role = new Role();
 
             if (id == null)
@@ -37,10 +42,7 @@ namespace Client.Controllers
                 return NotFound();
             }
 
-            using (var client = new HttpClient())
-            {
-                response = await client.GetStringAsync("http://localhost:5001/api/Roles/" + id);
-            }
+            var response = await client.GetStringAsync("http://localhost:5001/api/Roles/" + id);
 
             role = JsonConvert.DeserializeObject<Role>(response);
 
@@ -55,6 +57,7 @@ namespace Client.Controllers
         // GET: Roles/Create
         public IActionResult Create()
         {
+            setAccessToken();
             return View();
         }
 
@@ -65,16 +68,15 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Role role)
         {
+            setAccessToken();
             if (ModelState.IsValid)
             {
-                using (var client = new HttpClient())
-                {
-                    var myContent = JsonConvert.SerializeObject(role);
-                    var buffer = Encoding.UTF8.GetBytes(myContent);
-                    var byteContent = new ByteArrayContent(buffer);
-                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    await client.PostAsync("http://localhost:5001/api/roles/", byteContent);
-                }
+                var myContent = JsonConvert.SerializeObject(role);
+                var buffer = Encoding.UTF8.GetBytes(myContent);
+                var byteContent = new ByteArrayContent(buffer);
+                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                await client.PostAsync("http://localhost:5001/api/roles/", byteContent);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(role);
@@ -83,17 +85,14 @@ namespace Client.Controllers
         // GET: Roles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            var response = "";
+            setAccessToken();
             if (id == null)
             {
                 return NotFound();
             }
-
-            using (var client = new HttpClient())
-            {
-                response = await client.GetStringAsync("http://localhost:5001/api/Roles/" + id);
-            }
-
+            
+            var response = await client.GetStringAsync("http://localhost:5001/api/Roles/" + id);
+            
             var role = JsonConvert.DeserializeObject<Role>(response);
             if (role == null)
             {
@@ -109,6 +108,7 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Role role)
         {
+            setAccessToken();
             if (id != role.Id)
             {
                 return NotFound();
@@ -116,14 +116,11 @@ namespace Client.Controllers
 
             if (ModelState.IsValid)
             {
-                using (var client = new HttpClient())
-                {
-                    var myContent = JsonConvert.SerializeObject(role);
-                    var buffer = Encoding.UTF8.GetBytes(myContent);
-                    var byteContent = new ByteArrayContent(buffer);
-                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    await client.PutAsync("http://localhost:5001/api/roles/", byteContent);
-                }
+                var myContent = JsonConvert.SerializeObject(role);
+                var buffer = Encoding.UTF8.GetBytes(myContent);
+                var byteContent = new ByteArrayContent(buffer);
+                byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                await client.PutAsync("http://localhost:5001/api/roles/", byteContent);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -133,17 +130,14 @@ namespace Client.Controllers
         // GET: Roles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            var response = "";
+            setAccessToken();
             if (id == null)
             {
                 return NotFound();
             }
 
-            using (var client = new HttpClient())
-            {
-                response = await client.GetStringAsync("http://localhost:5001/api/Roles/" + id);
-            }
-
+            var response = await client.GetStringAsync("http://localhost:5001/api/Roles/" + id);
+            
             var role = JsonConvert.DeserializeObject<Role>(response);
 
             if (role == null)
@@ -159,11 +153,22 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            using (var client = new HttpClient())
-            {
-                await client.DeleteAsync("http://localhost:5001/api/roles/" + id);
-            }
+            setAccessToken();
+
+            await client.DeleteAsync("http://localhost:5001/api/roles/" + id);
             return RedirectToAction(nameof(Index));
+        }
+
+
+        private void setAccessToken()
+        {
+            if (client == null)
+            {
+                var accessToken = HttpContext.GetTokenAsync("access_token").Result;
+
+                client = new HttpClient();
+                client.SetBearerToken(accessToken);
+            }
         }
     }
 }
